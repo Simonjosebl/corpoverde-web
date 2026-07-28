@@ -585,6 +585,44 @@ section{position:relative}
 @media(max-width:920px){.vrail{grid-auto-columns:calc((100% - 1.2rem)/2)}}
 @media(max-width:560px){.vrail{grid-auto-columns:88%;gap:1rem}}
 
+
+/* ===== Franja de logros (stats) ===== */
+.stats-band{margin-top:clamp(2.4rem,6vw,4rem)}
+.stats-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.5vw,1.8rem)}
+.stat{position:relative;overflow:hidden;background:var(--blanco);border:1px solid var(--linea);
+  border-radius:var(--rad-lg);padding:clamp(1.7rem,3.4vw,2.5rem) clamp(1.4rem,2.6vw,2rem);
+  box-shadow:var(--shadow-sm);transition:transform .5s var(--spring),box-shadow .5s var(--spring),border-color .4s}
+.stat:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--lima)}
+.stat::before{content:"";position:absolute;inset:0 auto 0 0;width:5px;
+  background:linear-gradient(180deg,var(--lima),var(--azul))}
+.stat .stat-ic{width:46px;height:46px;border-radius:14px;display:grid;place-items:center;
+  background:var(--hueso-2);color:var(--bosque);margin-bottom:1.1rem}
+.stat .stat-ic svg{width:24px;height:24px}
+.stat .stat-num{font-family:var(--display);font-weight:800;line-height:1;
+  font-size:clamp(2.3rem,5vw,3.1rem);color:var(--bosque);letter-spacing:-.02em}
+.stat .stat-num .plus{color:var(--lima)}
+.stat .stat-label{margin-top:.5rem;color:var(--niebla);font-weight:500;font-size:.98rem;line-height:1.35}
+@media(max-width:760px){.stats-grid{grid-template-columns:1fr}}
+
+/* ===== Nuestras prioridades ===== */
+.prio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(1rem,2.4vw,1.7rem);
+  margin-top:clamp(1.8rem,4vw,2.6rem)}
+.prio{position:relative;background:var(--hueso);border:1px solid var(--linea);border-radius:var(--rad-lg);
+  padding:clamp(1.7rem,3.2vw,2.3rem);box-shadow:var(--shadow-sm);overflow:hidden;
+  transition:transform .5s var(--spring),box-shadow .5s var(--spring),border-color .4s}
+.prio:hover{transform:translateY(-6px);box-shadow:var(--shadow);border-color:var(--lima)}
+.prio .prio-ic{width:58px;height:58px;border-radius:18px;display:grid;place-items:center;
+  background:linear-gradient(135deg,var(--lima),var(--lima-2));color:var(--bosque);
+  box-shadow:0 12px 26px -12px rgba(138,195,45,.7);margin-bottom:1.3rem}
+.prio .prio-ic svg{width:28px;height:28px}
+.prio h3{font-family:var(--display);font-weight:700;font-size:1.18rem;color:var(--bosque);
+  line-height:1.25;margin:0 0 .55rem}
+.prio p{color:var(--niebla);font-size:.95rem;line-height:1.55;margin:0}
+.prio .prio-n{position:absolute;top:1.1rem;right:1.3rem;font-family:var(--display);font-weight:800;
+  font-size:2.2rem;color:var(--hueso-2);line-height:1;z-index:0}
+.prio>*{position:relative;z-index:1}
+@media(max-width:820px){.prio-grid{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -684,6 +722,30 @@ section{position:relative}
   </div>
 </section>
 
+
+<!-- ===== LOGROS / STATS ===== -->
+<section class="sec" style="padding-top:0">
+  <div class="wrap stats-band">
+    <div class="stats-grid">
+      <div class="stat reveal d1">
+        <div class="stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 8v4l3 2"/><circle cx="12" cy="12" r="9"/></svg></div>
+        <div class="stat-num"><span class="plus">+</span>25</div>
+        <div class="stat-label">años de trayectoria transformando comunidades</div>
+      </div>
+      <div class="stat reveal d2">
+        <div class="stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+        <div class="stat-num"><span class="plus">+</span>40.000</div>
+        <div class="stat-label">personas beneficiadas en todo el territorio</div>
+      </div>
+      <div class="stat reveal d3">
+        <div class="stat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div>
+        <div class="stat-num"><span class="plus">+</span>120</div>
+        <div class="stat-label">proyectos ejecutados en distintos sectores de impacto</div>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ===== MISIÓN / VISIÓN ===== -->
 <section class="sec sec-dark">
   <div class="wrap">
@@ -764,6 +826,38 @@ section{position:relative}
       <div class="area reveal d1"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7l1-8Z"/></svg></span><b>Energía</b></div>
       <div class="area reveal d2"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21C12 12 6 8 3 7c0 9 5 13 9 14Z"/><path d="M12 21c0-7 4-11 9-12 0 7-4 11-9 12Z"/></svg></span><b>Medio ambiente</b></div>
       <div class="area reveal d3"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.3 1 2.1h6c0-.8.4-1.6 1-2.1A7 7 0 0 0 12 2Z"/></svg></span><b>Emprendimiento</b></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ===== NUESTRAS PRIORIDADES ===== -->
+<section class="sec" id="prioridades" style="padding-top:0">
+  <div class="wrap">
+    <div class="sec-head center reveal">
+      <p class="eyebrow">En qué ponemos el foco</p>
+      <h2 class="h-sec">Nuestras <span class="accent">prioridades</span></h2>
+      <p class="lead">Tres apuestas que guían nuestro trabajo y definen el impacto que buscamos generar.</p>
+    </div>
+    <div class="prio-grid">
+      <div class="prio reveal d1">
+        <span class="prio-n">01</span>
+        <div class="prio-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4M12 2a5 5 0 0 1 5 5c0 2-1 3-2 4s-1 2-1 3H10c0-1 0-2-1-3s-2-2-2-4a5 5 0 0 1 5-5Z"/><path d="M9 18h6M10 21h4"/></svg></div>
+        <h3>Empoderar a las personas y a las empresas</h3>
+        <p>Fortalecemos capacidades, liderazgos y tejido productivo para que comunidades y organizaciones sean protagonistas de su propio desarrollo.</p>
+      </div>
+      <div class="prio reveal d2">
+        <span class="prio-n">02</span>
+        <div class="prio-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21C12 12 6 8 3 7c0 9 5 13 9 14Z"/><path d="M12 21c0-9 6-13 9-14 0 9-5 13-9 14Z"/><path d="M12 21V11"/></svg></div>
+        <h3>El poder del propósito e impacto social</h3>
+        <p>Cada proyecto nace de un propósito claro: generar cambios medibles y sostenibles en la vida de las personas y en el cuidado del planeta.</p>
+      </div>
+      <div class="prio reveal d3">
+        <span class="prio-n">03</span>
+        <div class="prio-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M12 12v6M9 15h6"/><path d="M5 21c1.5-3 4-4.5 7-4.5s5.5 1.5 7 4.5"/></svg></div>
+        <h3>Empoderamiento económico femenino en los campos de Colombia</h3>
+        <p>Impulsamos la autonomía económica de las mujeres rurales mediante formación, emprendimiento y acceso a oportunidades en el campo colombiano.</p>
+      </div>
     </div>
   </div>
 </section>
