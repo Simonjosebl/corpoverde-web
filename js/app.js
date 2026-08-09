@@ -9,11 +9,15 @@
 
   /* Header shrink + back-to-top */
   function onScroll(){
-    var y=window.scrollY||0;
+    var y=window.scrollY||window.pageYOffset||0;
     header.classList.toggle('shrunk',y>20);
-    toTop.classList.toggle('show',y>700);
+    toTop.classList.toggle('show',y>360);
   }
   window.addEventListener('scroll',onScroll,{passive:true}); onScroll();
+  toTop.addEventListener('click',function(){
+    try{ window.scrollTo({top:0,behavior:'smooth'}); }
+    catch(e){ window.scrollTo(0,0); }
+  });
 
   /* Drawer */
   function setDrawer(open){
