@@ -32,6 +32,27 @@
   scrim.addEventListener('click',function(){setDrawer(false);});
   drawer.querySelectorAll('a').forEach(function(a){a.addEventListener('click',function(){setDrawer(false);});});
 
+  /* Submenús del drawer: plegables. El <span> del grupo hace de cabecera
+     y los enlaces se agrupan en un contenedor para poder animar el pliegue. */
+  drawer.querySelectorAll('.dgroup').forEach(function(g){
+    var cab=g.querySelector('span'); if(!cab) return;
+    var caja=document.createElement('div');
+    caja.className='dg-items';
+    while(cab.nextSibling) caja.appendChild(cab.nextSibling);
+    g.appendChild(caja);
+    cab.setAttribute('role','button');
+    cab.setAttribute('tabindex','0');
+    cab.setAttribute('aria-expanded','false');
+    function alternar(){
+      var abierto=g.classList.toggle('open');
+      cab.setAttribute('aria-expanded',abierto?'true':'false');
+    }
+    cab.addEventListener('click',alternar);
+    cab.addEventListener('keydown',function(e){
+      if(e.key==='Enter'||e.key===' '||e.keyCode===13||e.keyCode===32){e.preventDefault();alternar();}
+    });
+  });
+
   /* Scroll reveal */
   var io=new IntersectionObserver(function(entries){
     entries.forEach(function(e){ if(e.isIntersecting){e.target.classList.add('in'); io.unobserve(e.target);} });

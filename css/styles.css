@@ -3,6 +3,7 @@
 :root{
   --bosque:#0B2E1F; --bosque-2:#0F3A28; --bosque-3:#14472F;
   --lima:#8AC32D; --lima-2:#A8E05A;
+  --neon:#6FA828; --neon-2:#87C13A;
   --azul:#058CBB; --azul-2:#3FB4DD;
   --hueso:#F4F7EF; --hueso-2:#ECF1E4;
   --tinta:#16271E; --niebla:#5B6A61; --linea:#DDE6D4;
@@ -116,25 +117,25 @@ h1,h2,h3{font-family:var(--display);font-weight:700;line-height:1.06;letter-spac
 .menu a:hover{color:var(--bosque)}
 .menu a:hover::after,.menu a.active::after{transform:scaleX(1)}
 .nav-cta{display:flex;align-items:center;gap:.6rem}
-/* Botón hamburguesa: verde neón */
+/* Botón hamburguesa: verde neón (tono cercano al de la marca) */
 .burger{display:none;width:46px;height:46px;border-radius:14px;place-items:center;
-  border:1px solid rgba(138,195,45,.5);
-  background:linear-gradient(150deg,rgba(138,195,45,.14),rgba(5,140,187,.08)),var(--blanco);
-  box-shadow:0 6px 18px -10px rgba(138,195,45,.9),inset 0 0 0 1px rgba(255,255,255,.6);
+  border:1px solid rgba(111,168,40,.45);
+  background:linear-gradient(150deg,rgba(111,168,40,.12),rgba(11,46,31,.04)),var(--blanco);
+  box-shadow:0 5px 16px -10px rgba(111,168,40,.85),inset 0 0 0 1px rgba(255,255,255,.6);
   transition:border-color .3s,box-shadow .35s var(--spring),transform .35s var(--spring)}
-.burger:hover{transform:translateY(-1px);border-color:var(--lima);
-  box-shadow:0 8px 22px -8px rgba(138,195,45,1)}
-.burger span{display:block;width:20px;height:2px;background:var(--lima);border-radius:2px;
+.burger:hover{transform:translateY(-1px);border-color:var(--neon);
+  box-shadow:0 7px 20px -9px rgba(111,168,40,.95)}
+.burger span{display:block;width:20px;height:2px;background:var(--neon);border-radius:2px;
   position:relative;transition:transform .3s,opacity .3s,background .3s,box-shadow .3s;
-  box-shadow:0 0 8px rgba(138,195,45,.85)}
+  box-shadow:0 0 6px rgba(111,168,40,.6)}
 .burger span::before,.burger span::after{content:'';position:absolute;left:0;width:20px;height:2px;
-  background:var(--lima);border-radius:2px;box-shadow:0 0 8px rgba(138,195,45,.85);
+  background:var(--neon);border-radius:2px;box-shadow:0 0 6px rgba(111,168,40,.6);
   transition:transform .3s,background .3s}
 .burger span::before{top:-6px}.burger span::after{top:6px}
-.burger.open{border-color:var(--lima-2);box-shadow:0 0 0 3px rgba(138,195,45,.18),0 8px 22px -8px rgba(138,195,45,1)}
+.burger.open{border-color:var(--neon);box-shadow:0 0 0 3px rgba(111,168,40,.16),0 7px 20px -9px rgba(111,168,40,.95)}
 .burger.open span{background:transparent;box-shadow:none}
-.burger.open span::before{transform:translateY(6px) rotate(45deg);background:var(--lima-2)}
-.burger.open span::after{transform:translateY(-6px) rotate(-45deg);background:var(--lima-2)}
+.burger.open span::before{transform:translateY(6px) rotate(45deg);background:var(--neon-2)}
+.burger.open span::after{transform:translateY(-6px) rotate(-45deg);background:var(--neon-2)}
 
 /* Drawer móvil */
 .drawer{position:fixed;inset:0 0 0 auto;width:min(86vw,340px);z-index:70;
@@ -676,19 +677,32 @@ section{position:relative}
 .submenu a{display:flex;align-items:center;gap:.6rem;padding:.6rem .8rem;border-radius:10px;
   font-size:.92rem;font-weight:500;color:var(--bosque);white-space:nowrap;transition:background .2s,color .2s}
 .submenu a:hover{background:var(--hueso-2);color:var(--azul)}
-.submenu a .dotp{width:6px;height:6px;border-radius:50%;background:var(--lima);flex:none}
+/* marcador de opción: guion corto (mismo criterio en escritorio y móvil) */
+.submenu a .dotp{width:10px;height:2px;border-radius:1px;background:var(--neon);flex:none;opacity:.85}
+.drawer .dgroup .dotp{flex:none;width:10px;height:2px;border-radius:1px;background:var(--neon);opacity:.8}
 
 /* Drawer móvil: grupos con submenús */
-/* Grupos del menú móvil: en columna (antes los enlaces quedaban en línea y se salían)
-   y con el título legible sobre el fondo verde */
-.drawer .dgroup{margin:.2rem 0;display:flex;flex-direction:column}
-.drawer .dgroup>span{display:block;font-family:var(--display);font-weight:700;color:var(--lima-2);
-  font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;margin:.9rem 0 .25rem;opacity:.95}
-.drawer .dgroup a{display:flex;align-items:center;gap:.55rem;
-  padding:.6rem .4rem;font-size:.95rem;color:rgba(255,255,255,.8);
-  border-bottom:1px solid rgba(255,255,255,.06)}
-.drawer .dgroup a:last-child{border-bottom:0}
-.drawer .dgroup .dotp{flex:none;width:5px;height:5px;border-radius:50%;background:var(--lima);opacity:.7}
+/* Grupos del menú móvil: cabecera pulsable + submenú plegable */
+.drawer .dgroup{margin:0;display:flex;flex-direction:column;
+  border-bottom:1px solid rgba(255,255,255,.08)}
+.drawer .dgroup>span{display:flex;align-items:center;justify-content:space-between;gap:.6rem;
+  padding:.95rem .4rem;font-size:1.1rem;font-weight:500;color:rgba(255,255,255,.9);
+  cursor:pointer;user-select:none;transition:color .3s}
+.drawer .dgroup>span:hover,.drawer .dgroup.open>span{color:var(--neon-2)}
+/* flecha hacia abajo, del mismo verde que la hamburguesa */
+.drawer .dgroup>span::after{content:'';flex:none;width:9px;height:9px;margin-right:.2rem;
+  border-right:2px solid var(--neon);border-bottom:2px solid var(--neon);border-radius:1px;
+  transform:translateY(-3px) rotate(45deg);
+  filter:drop-shadow(0 0 4px rgba(111,168,40,.55));
+  transition:transform .35s var(--spring),border-color .3s}
+.drawer .dgroup.open>span::after{transform:translateY(1px) rotate(-135deg);border-color:var(--neon-2)}
+.drawer .dg-items{overflow:hidden;max-height:0;transition:max-height .45s var(--spring)}
+.drawer .dgroup.open .dg-items{max-height:34rem}
+.drawer .dgroup a{display:flex;align-items:center;gap:.6rem;
+  padding:.55rem .4rem .55rem .95rem;font-size:.95rem;color:rgba(255,255,255,.72);
+  border-bottom:0}
+.drawer .dgroup a:hover{color:var(--neon-2)}
+.drawer .dg-items>:last-child{margin-bottom:.6rem}
 
 /* ================= SUB-HERO (cabecera de páginas internas) ================= */
 .subhero{position:relative;padding:clamp(4.3rem,7vw,5.2rem) 0 clamp(1.4rem,2.8vw,2rem);
@@ -935,6 +949,8 @@ section[id],[id].card,[id].pipe-panel{scroll-margin-top:82px}
 .subnav ~ section [id].card{scroll-margin-top:166px}
 
 @media(max-width:920px){
+  /* la hamburguesa queda pegada al borde derecho del header */
+  .nav-cta{margin-left:auto}
   /* el indicador "Explorar" se solapaba con el panel de cifras */
   .scroll-cue{display:none}
   .hero{min-height:auto}
