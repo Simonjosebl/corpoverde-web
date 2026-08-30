@@ -243,10 +243,17 @@
     var sectorSel=document.getElementById('pjSector');
     var depSel=document.getElementById('pjDep');
     var munSel=document.getElementById('pjMun');
+    var estadoSel=document.getElementById('pjEstado');
     var countEl=document.getElementById('pjCount');
     var sortKey='n', sortDir=1;
     var fmt=function(v){return v==null?'—':v.toLocaleString('es-CO');};
     var money=function(v){return v==null?'—':'$'+v.toLocaleString('es-CO');};
+    /* Las filas se inyectan con innerHTML: todo campo de texto pasa por aquí */
+    var esc=function(s){
+      return String(s==null?'':s).replace(/[&<>"]/g,function(c){
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];
+      });
+    };
 
     // valores únicos de un campo, ordenados con acentos del español
     function unicos(rows,key){
@@ -269,6 +276,7 @@
 
     llenar(sectorSel,unicos(data,'sector'));
     llenar(depSel,unicos(data,'dep'));
+    llenar(estadoSel,unicos(data,'estado'));
 
     // los municipios dependen del departamento elegido
     function syncMun(){
@@ -286,12 +294,14 @@
       var sec=sectorSel&&sectorSel.value||'';
       var dep=depSel&&depSel.value||'';
       var mun=munSel&&munSel.value||'';
+      var est=estadoSel&&estadoSel.value||'';
       var rows=data.filter(function(d){
         var okS=!sec||d.sector===sec;
         var okD=!dep||d.dep===dep;
         var okM=!mun||d.mun===mun;
-        var okQ=!q||[d.nombre,d.dep,d.mun,d.sector].join(' ').toLowerCase().indexOf(q)>=0;
-        return okS&&okD&&okM&&okQ;
+        var okE=!est||d.estado===est;
+        var okQ=!q||[d.nombre,d.dep,d.mun,d.sector,d.estado].join(' ').toLowerCase().indexOf(q)>=0;
+        return okS&&okD&&okM&&okE&&okQ;
       });
       rows.sort(function(a,b){
         var x=a[sortKey],y=b[sortKey];
@@ -305,13 +315,15 @@
     function render(){
       var rows=current();
       if(countEl) countEl.textContent=rows.length+' de '+data.length+' proyectos';
-      if(!rows.length){mount.innerHTML='<tr><td colspan="6" class="pj-empty">No se encontraron proyectos con esos criterios.</td></tr>';return;}
+      if(!rows.length){mount.innerHTML='<tr><td colspan="7" class="pj-empty">No se encontraron proyectos con esos criterios.</td></tr>';return;}
       var html='';
       rows.forEach(function(d){
+        var clase=(d.estado==='Estudio')?'est':'reg';
         html+='<tr><td class="c-num">'+d.n+'</td>'+
-          '<td>'+d.nombre+'</td>'+
-          '<td>'+(d.dep||'—')+'<br><span style="color:var(--niebla);font-size:.85em">'+(d.mun||'')+'</span></td>'+
-          '<td><span class="badge">'+(d.sector||'—')+'</span></td>'+
+          '<td>'+esc(d.nombre)+'</td>'+
+          '<td>'+esc(d.dep||'—')+'<br><span style="color:var(--niebla);font-size:.85em">'+esc(d.mun||'')+'</span></td>'+
+          '<td><span class="badge">'+esc(d.sector||'—')+'</span></td>'+
+          '<td><span class="pj-estado '+clase+'">'+esc(d.estado||'—')+'</span></td>'+
           '<td class="c-num">'+fmt(d.ben)+'</td>'+
           '<td class="c-num">'+money(d.val)+'</td></tr>';
       });
@@ -319,6 +331,7 @@
     }
     if(search) search.addEventListener('input',render);
     if(sectorSel) sectorSel.addEventListener('change',render);
+    if(estadoSel) estadoSel.addEventListener('change',render);
     if(depSel) depSel.addEventListener('change',function(){syncMun();render();});
     if(munSel) munSel.addEventListener('change',render);
     document.querySelectorAll('table.pj thead th[data-key]').forEach(function(th){
