@@ -2345,3 +2345,69 @@ body > section.sec:last-of-type{padding-bottom:clamp(2.4rem,4.4vw,3.6rem)}
   .dp-contact li{padding-block:.15rem}
   .dp-contact a{padding-block:.42rem;display:inline-block}
 }
+
+/* ============================================================================
+   50. PESTAÑAS DEL CICLO Y PANEL DE ESTUDIO
+   ----------------------------------------------------------------------------
+   El degradado del borde derecho difuminaba el último botón aunque la fila
+   cupiera entera. Ahora solo aparece cuando la fila realmente se desplaza, y
+   el panel de Estudio muestra los proyectos reales en lugar de un aviso.
+   ========================================================================== */
+.pipe-tabs{
+  -webkit-mask-image:linear-gradient(90deg,#000 0,#000 97%,transparent 100%);
+  mask-image:linear-gradient(90deg,#000 0,#000 97%,transparent 100%);
+  padding-right:2px;
+}
+/* A partir del ancho en el que las nueve pestañas caben, sin degradado */
+@media (min-width:1120px){
+  .pipe-tabs{-webkit-mask-image:none;mask-image:none;padding-right:0}
+}
+/* Bordes homogéneos: antes unas se veían grises y otras verdes */
+.pipe-tab{border:1px solid var(--linea-2);background:#fff;color:#4b5f54}
+.pipe-tab:hover:not(.active){
+  border-color:rgba(138,195,45,.55);color:var(--bosque);
+  background:rgba(138,195,45,.06);transform:translateY(-2px);
+}
+.pipe-tab.active{
+  background:var(--bosque);color:#fff;border-color:var(--bosque);
+  box-shadow:0 10px 24px -14px rgba(11,46,31,.9);
+}
+
+/* --- Rótulo de la vista activa: dice qué está mostrando la tabla --- */
+.pj-vista{margin:clamp(1.2rem,2.6vw,1.9rem) 0 clamp(1rem,2vw,1.4rem);max-width:64ch}
+.pj-vista h3{
+  font-family:var(--display);font-weight:700;
+  font-size:clamp(1.2rem,2.4vw,1.5rem);color:var(--bosque);margin:0 0 .35rem;
+}
+.pj-vista p{color:var(--niebla);font-size:.93rem;line-height:1.6;margin:0}
+
+/* Las cifras dejan de animarse con data-cifra: ahora las escribe el propio
+   renderizador de la tabla, así nunca contradicen a las filas de abajo. */
+.pj-stat b{transition:none}
+.pj-tools{margin-top:0}
+
+/* ============================================================================
+   51. FILA DE PESTAÑAS Y ESPACIADO DEL PANEL
+   ----------------------------------------------------------------------------
+   La fila tenía overflow-x:auto y relleno solo por debajo, así que al elevarse
+   un botón en hover su borde superior quedaba recortado. Y el relleno del panel
+   más el margen del rótulo sumaban 69 px de aire muerto entre las pestañas y
+   el contenido.
+   ========================================================================== */
+.pipe-tabs{
+  padding-block:.5rem;              /* espacio para que el hover no se corte */
+  padding-inline:2px;
+  margin-inline:-2px;
+  margin-top:.6rem;
+  align-items:center;
+}
+.pipe-tab{flex:none}
+
+.pipe-panel{padding-top:clamp(1.4rem,2.6vw,2rem)}
+.pj-vista{margin-top:0;margin-bottom:clamp(.9rem,1.8vw,1.3rem)}
+.pj-stats{margin-bottom:clamp(.9rem,1.8vw,1.3rem)}
+.pj-tools{margin-block:0 .6rem}
+.pj-count{margin-bottom:.35rem}
+
+/* El aviso de las etapas sin datos no necesita tanto alto */
+.pipe-empty{padding:clamp(1.8rem,3.4vw,2.6rem) clamp(1.3rem,3vw,2.2rem)}

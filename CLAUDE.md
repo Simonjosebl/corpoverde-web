@@ -91,9 +91,21 @@ Style convention across all scripts: ES5 (`var`, `function`, IIFEs), no build/tr
 
 **Section with a background video** (`index.html#contacto`) — mark the section `sec sec-dark sec-video` and put a `.sec-video-capa` holding a `<video data-fondo …>` plus a `.sv-velo` overlay as its first child. `ui.js` forces muted/looped/inline playback and pauses it off-screen. Cards, contact details and the form all get dark-glass variants under `.sec-video`. Pick a background clip with **no burnt-in text and no watermark**, and keep it small — the veil must stay dark enough that the form labels and placeholders remain legible.
 
-**Pipeline tabs** (`proyectos.html`) — `.pipe-tab[data-panel="X"]` toggles `.active` on `#X.pipe-panel`. The panel IDs (`activados`, `estudio`, `viables`, `aprobados`, `financiados`, `ejecucion`, `supervision`, `ejecutados`, `informes`) double as hash anchors. Adding a pipeline state means touching the tab, the panel, the nav mega-menu and drawer groups on all six pages, and the footer.
+**Pipeline tabs** (`proyectos.html`) — the nine stages of the project cycle. There is **one table**, and the tabs filter it; there is no separate per-stage layout and no state dropdown (both existed once and were redundant with each other).
 
-**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **113 records** from the "Proyectos Activados Presentados Proteverde" sheet (28-ago-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip. It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / estado / department / municipality filters (`#pjSector`, `#pjEstado`, `#pjDep`, `#pjMun`, options derived from the data) and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
+Each tab carries three attributes:
+
+- `data-panel` — which `.pipe-panel` to reveal. Stages **with data point at `activados`**, the panel that holds the stats, the toolbar and the table.
+- `data-estado` — present only on stages backed by data. Its value is matched against `PROYECTOS[].estado`; the empty string means "no filter". `app.js` passes it to `window.CPV_PROYECTOS.filtrarEstado()`, which clears the other filters and re-renders.
+- `data-ancla` — the hash this tab answers to (`proyectos.html#estudio` still works even though no `#estudio` element exists any more).
+
+The four `.pj-stat` figures carry `data-pj="n|ben|val|dep"` and are **recomputed from the rows actually on screen**, so they can never contradict the table below them; the label of the first one (`data-pj-tx="n"`) changes with the view too. Below a billion the investment figure switches from *billones* to *mil millones* on its own. The `#pjVistaTit` / `#pjVistaSub` pair names the active view.
+
+To give another stage real data: set the matching `estado` on the records in `proyectos-data.js`, then add `data-estado="<Estado>"` and `data-panel="activados"` to its tab and an entry to the `VISTAS` table in `app.js`. Delete its now-unused `.pipe-panel`. Stages left without `data-estado` keep showing their "coming soon" notice.
+
+Adding a stage still means touching the tab, the nav mega-menu and drawer groups on all six pages, and the footer.
+
+**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **113 records** from the "Proyectos Activados Presentados Proteverde" sheet (28-ago-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip. It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
 
 The table is deliberately **not selectable or copyable** (`user-select:none` + `-webkit-touch-callout:none` on `table.pj`/`.pj-table-wrap`) and there is no export/download button — don't reintroduce one.
 

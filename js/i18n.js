@@ -676,6 +676,16 @@
   "corpoteverde@gmail.com":"corpoteverde@gmail.com",
 
   /* ---------- Piezas del showcase de video ---------- */
+  "Portafolio completo":"Full portfolio",
+  "Todos los proyectos radicados ante la Corporación, con su etapa en el ciclo.":"Every project filed with the Corporation, with its stage in the cycle.",
+  "Iniciativas radicadas que están en formulación o estructuración técnica y financiera. Al superar esta etapa pasan a viables.":"Filed initiatives being formulated or structured technically and financially. Once they clear this stage they move to viable.",
+  "mil millones":"billion",
+
+  "Proyectos en estudio":"Projects under study",
+  "Iniciativas que ya fueron radicadas y están en formulación o estructuración técnica y financiera. Al superar esta etapa pasan a":"Initiatives already filed that are being formulated or structured technically and financially. Once they clear this stage they move to",
+  "Por ahora no hay proyectos en esta etapa.":"There are no projects at this stage yet.",
+  "Valor":"Value",
+
   "A la orilla del río":"At the riverbank",
   "Niñas, niños y familias recorriendo la ribera durante una jornada en comunidad.":"Children and families walking along the riverbank during a community field day.",
 

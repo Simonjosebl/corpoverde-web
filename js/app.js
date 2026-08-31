@@ -243,7 +243,9 @@
     var sectorSel=document.getElementById('pjSector');
     var depSel=document.getElementById('pjDep');
     var munSel=document.getElementById('pjMun');
-    var estadoSel=document.getElementById('pjEstado');
+    /* El estado ya no se elige en un desplegable: lo fijan las pestañas
+       del ciclo a través de window.CPV_PROYECTOS.filtrarEstado(). */
+    var estadoActivo='';
     var countEl=document.getElementById('pjCount');
     var sortKey='n', sortDir=1;
     var fmt=function(v){return v==null?'—':v.toLocaleString('es-CO');};
@@ -276,7 +278,6 @@
 
     llenar(sectorSel,unicos(data,'sector'));
     llenar(depSel,unicos(data,'dep'));
-    llenar(estadoSel,unicos(data,'estado'));
 
     // los municipios dependen del departamento elegido
     function syncMun(){
@@ -294,7 +295,7 @@
       var sec=sectorSel&&sectorSel.value||'';
       var dep=depSel&&depSel.value||'';
       var mun=munSel&&munSel.value||'';
-      var est=estadoSel&&estadoSel.value||'';
+      var est=estadoActivo;
       var rows=data.filter(function(d){
         var okS=!sec||d.sector===sec;
         var okD=!dep||d.dep===dep;
@@ -314,7 +315,16 @@
     }
     function render(){
       var rows=current();
-      if(countEl) countEl.textContent=rows.length+' de '+data.length+' proyectos';
+      cifras(rows);
+      /* El contador se mide contra la etapa activa, no contra el catálogo
+         entero: dentro de "Estudio" lo útil es saber cuántos de esos 7 quedan. */
+      if(countEl){
+        var base = estadoActivo
+          ? data.filter(function(d){ return d.estado===estadoActivo; }).length
+          : data.length;
+        countEl.textContent = rows.length + ' de ' + base + ' proyectos' +
+          (estadoActivo ? ' en ' + estadoActivo.toLowerCase() : '');
+      }
       if(!rows.length){mount.innerHTML='<tr><td colspan="7" class="pj-empty">No se encontraron proyectos con esos criterios.</td></tr>';return;}
       var html='';
       rows.forEach(function(d){
@@ -331,9 +341,47 @@
     }
     if(search) search.addEventListener('input',render);
     if(sectorSel) sectorSel.addEventListener('change',render);
-    if(estadoSel) estadoSel.addEventListener('change',render);
     if(depSel) depSel.addEventListener('change',function(){syncMun();render();});
     if(munSel) munSel.addEventListener('change',render);
+    /* Cifras de cabecera: se recalculan con lo que hay en pantalla, para que
+       nunca contradigan a la tabla que tienen debajo. */
+    function cifras(rows){
+      var ben=0, val=0, deps={};
+      rows.forEach(function(d){
+        ben+=d.ben||0; val+=d.val||0;
+        if(d.dep && d.dep!=='Cobertura nacional') deps[d.dep]=1;
+      });
+      var v={n:rows.length, ben:ben, val:val, dep:Object.keys(deps).length};
+      document.querySelectorAll('[data-pj]').forEach(function(el){
+        var k=el.getAttribute('data-pj');
+        if(k==='val'){
+          /* Por debajo de un billón la cifra se lee mejor en miles de millones */
+          el.textContent = v.val >= 1e12
+            ? '$'+(v.val/1e12).toLocaleString('es-CO',
+                {minimumFractionDigits:2,maximumFractionDigits:2})+' billones'
+            : '$'+(v.val/1e9).toLocaleString('es-CO',
+                {maximumFractionDigits:1})+' mil millones';
+        } else {
+          el.textContent=v[k].toLocaleString('es-CO');
+        }
+      });
+      var etq=document.querySelector('[data-pj-tx="n"]');
+      if(etq) etq.textContent = estadoActivo
+        ? 'Proyectos en '+estadoActivo.toLowerCase()
+        : 'Proyectos activados y presentados';
+    }
+
+    window.CPV_PROYECTOS={
+      filtrarEstado:function(est){
+        estadoActivo=est||'';
+        if(search) search.value='';
+        if(sectorSel) sectorSel.value='';
+        if(depSel){ depSel.value=''; syncMun(); }
+        if(munSel) munSel.value='';
+        render();
+      }
+    };
+
     document.querySelectorAll('table.pj thead th[data-key]').forEach(function(th){
       th.addEventListener('click',function(){
         var k=th.getAttribute('data-key');
@@ -346,17 +394,40 @@
 
 
 
-  /* ===== Pipeline: abrir pestaña según ancla (#estado) ===== */
+  /* ===== Ciclo de proyectos: las pestañas gobiernan la tabla =====
+     Las etapas con datos (Activados presentados y Estudio) muestran siempre la
+     misma tabla, filtrada; las que aún no tienen registros abren su aviso. */
   (function(){
     var tabs=document.querySelectorAll('.pipe-tab'); if(!tabs.length) return;
-    function openFromHash(){
+    var tit=document.getElementById('pjVistaTit');
+    var sub=document.getElementById('pjVistaSub');
+
+    var VISTAS={
+      '':       {t:'Portafolio completo',
+                 s:'Todos los proyectos radicados ante la Corporación, con su etapa en el ciclo.'},
+      'Estudio':{t:'Proyectos en estudio',
+                 s:'Iniciativas radicadas que están en formulación o estructuración técnica y financiera. Al superar esta etapa pasan a viables.'}
+    };
+
+    tabs.forEach(function(b){
+      b.addEventListener('click',function(){
+        if(!b.hasAttribute('data-estado')) return;   /* etapas sin datos */
+        var est=b.getAttribute('data-estado')||'';
+        if(window.CPV_PROYECTOS) window.CPV_PROYECTOS.filtrarEstado(est);
+        var v=VISTAS[est]||VISTAS[''];
+        if(tit) tit.textContent=v.t;
+        if(sub) sub.textContent=v.s;
+      });
+    });
+
+    function abrirDesdeHash(){
       var id=(location.hash||'').replace('#','');
       if(!id) return;
-      var tab=document.querySelector('.pipe-tab[data-panel="'+id+'"]');
+      var tab=document.querySelector('.pipe-tab[data-ancla="'+id+'"]');
       if(tab){ tab.click(); tab.scrollIntoView({block:'nearest',inline:'center'}); }
     }
-    window.addEventListener('hashchange',openFromHash);
-    openFromHash();
+    window.addEventListener('hashchange',abrirDesdeHash);
+    abrirDesdeHash();
   })();
 
 })();
