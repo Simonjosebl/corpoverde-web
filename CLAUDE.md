@@ -105,19 +105,29 @@ To give another stage real data: set the matching `estado` on the records in `pr
 
 Adding a stage still means touching the tab, the nav mega-menu and drawer groups on all six pages, and the footer.
 
-**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **113 records** from the "Proyectos Activados Presentados Proteverde" sheet (28-ago-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip. It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
+**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **114 records** from the "Proyectos Activados Presentados Proteverde" sheet (10-sep-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Aprobados"`, `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip (`.apr` / `.est` / `.reg`). It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
 
 The table is deliberately **not selectable or copyable** (`user-select:none` + `-webkit-touch-callout:none` on `table.pj`/`.pj-table-wrap`) and there is no export/download button — don't reintroduce one.
 
-The `.pj-stats` figures above the table are hardcoded and must be kept in sync with the data: **113 records, 773.975 beneficiaries, $1,84 billones COP, 23 departments** (the same 23 figure also appears in the `.credenciales` band on `index.html`). Recompute with:
+The `.pj-stats` figures above the table are hardcoded and must be kept in sync with the data: **114 records, 776.075 beneficiaries, $1,85 billones COP, 22 departments** (the record count and the 22 figure also appear in the `.credenciales` band on `index.html`, and `$1,85 billones` is a `DIC` key in `i18n.js`). Recompute with:
 
 ```powershell
 node -e "global.window={};require('./js/proyectos-data.js');var p=window.PROYECTOS;console.log(p.length, p.reduce((a,b)=>a+(b.ben||0),0), p.reduce((a,b)=>a+(b.val||0),0))"
 ```
 
-Note: the TOTAL row printed in the source PDF (435.240 / 1.688.862.756.919) does **not** sum every row — it omits rows 1–7 and the rows whose value was stored as text. The site uses the honest full sum, not the PDF's total.
+Note: the TOTAL row printed in the source PDF (436.660 / 1.686.082.728.035) does **not** sum every row — it omits rows 1–7 and the rows whose value was stored as text. The site uses the honest full sum, not the PDF's total.
 
-**Project submission page** (`presentar-proyecto.html`) — five `.paso` cards (a `counter-reset:paso` grid; the dotted connector only shows at ≥1180px where the five fit on one row), six `.doc` download cards pointing at `docs/formatos/`, an eleven-item `.acord` guide to the official form, an FAQ accordion and the contact form.
+Two more things the 10-sep-2026 PDF does that the site does not copy verbatim:
+
+- Row 91 is blank and row 116 carries no number, so the sheet's 115 data lines are renumbered 1–114 here after one removal.
+- The Chaparral market-hall project appears **twice**: as row 1 (`Aprobados`, $14.099.621.857) and again as row 51 with its previous figure (`Estudio`, $12.543.912.417). Same name, same 54.809 beneficiaries — it is a stale duplicate line, so only the approved row is published.
+- The Timaná (Huila) solar project that was record 50 is **gone** from the new sheet, which is why the department count drops from 23 to 22.
+
+**Project submission page** (`presentar-proyecto.html`) — in order: three `.paso` cards, one per **official phase** (`#como`), the nine-step **official diagram** (`#flujo`), six `.doc` download cards pointing at `docs/formatos/` (`#formatos`), an eleven-item `.acord` guide to the official form (`#guia`), an FAQ accordion and the contact form.
+
+The phases and the nine steps both come from `docs/formatos/Informacion-Proceso-Registro-Proyectos-Corpoteve.pdf` — the phases from its text, the steps from the "Diagrama de proceso de presentación, evaluación y ejecución de proyectos" image embedded in it. **The diagram is republished as HTML (`.flujo`, CSS section 54), not as that JPEG**, so it stays responsive, translatable through `DIC` and readable by a screen reader; the PDF itself is offered for download at the foot of the section. If the Corporation revises the diagram, update the `PASOS`/`GRUPOS` tables that generated the markup and the matching `DIC` keys — do not paste the image in.
+
+The earlier five `.paso` cards were ours, not the Corporation's; they were replaced by the three real phases.
 
 `docs/formatos/` holds: the Corporation's own instructions (`Informacion-Proceso-Registro-Proyectos`), the blank submission form, the three SARLAFT documents, and `Ejemplo-Formulario-Diligenciado-Corpoteve.pdf`. That last one is **ours**: an HTML mock-up of the official form filled with a deliberately fictional project, printed to PDF with headless Chrome. It carries an "EJEMPLO" watermark and a disclaimer banner and must keep both — it exists to show the expected level of detail, never to pass as a real submission.
 
@@ -151,9 +161,31 @@ Card families each have their own personality on purpose — `.pilar` (gradient 
 
 ### Assets
 
-`img/asset-<hash>.{jpg,png}` are content-hashed originals — filenames are meaningless, so identify them by the `alt` text at their usage sites. Named files: `img/logo.png` (transparent RGBA, used for the header mark, the loader and the favicon — it is shown **without** any ring or circle wrapper anywhere: the logo is already circular, so the old `.brand .ring` and `.about-visual .ring-xl` frames are neutralised in `rediseno.css`), `img/hero.jpg`, `img/minambiente.png`, `img/comunidad-taller-{1,2,3}.jpg` (2026 community workshop photos).
+`img/asset-<hash>.{jpg,png}` are content-hashed originals — filenames are meaningless, so identify them by the `alt` text at their usage sites. Named files: `img/hero.jpg`, `img/minambiente.png`, `img/proyectos-360.png` (a partner's logo, not ours), `img/comunidad-taller-{1,2,3}.jpg` (2026 community workshop photos).
 
-`media/` holds the MP4s and their `poster-*.jpg` (each poster is a real frame pulled from its own clip with `ffmpeg -ss … -frames:v 1`, not a loose photo). The whole folder is ~42 MB.
+From the 7-sep-2026 field material: `img/escuela-rural.jpg`, `img/asamblea-comunidad.jpg`, `img/olla-comunitaria.jpg`, `img/ninez-materiales.jpg`, `img/encuentro-comunidad.jpg`, `img/ninas-jornada.jpg` and `img/jornada-plaza.jpg` (the only portrait one, used as the `.imp.tall` tile). Phone originals are 4032 px wide and 1,5–2,8 MB; they are published at 1280 px / `-q:v 5` (~220–370 KB), except the portrait one at 910 px. The `.impact-grid` on `programas.html` now tiles **12** figures and the one on `index.html` **7** — both sets tile the 12-column grid exactly, so adding or removing one figure means re-checking the spans (`big` 6×2, `tall` 3×2, `wide` 6, `sq` 3) or the last row goes ragged.
+
+**The logo** (September 2026 onwards) is the circular CPV emblem — dark green and gold, "CORPORACIÓN PROTECTORA VERDE · PROTECCIÓN AMBIENTAL · EST. 2001". It ships in two files:
+
+| file | size | used by |
+|---|---|---|
+| `img/logo.webp` | 512x512, q90, 98 KB | every `<img>`: header, loader, drawer, footer, "Quiénes somos" |
+| `img/logo.png` | 128x128, 41 KB | the `<link rel="icon">` favicon only |
+
+**WebP is deliberate**: the emblem is a photorealistic seal full of gradients, so PNG compresses it badly — the same 512px frame is 539 KB as PNG against 98 KB as WebP. The favicon stays PNG because WebP favicon support is still uneven. The 4096px master is archived outside the site, in `../corpoverde-backup-2026-08-30/CPV_LOGO_NUEVO-master-4096.png`; regenerate the web files from it with:
+
+```powershell
+ffmpeg -i master.png -vf "scale=512:512:flags=lanczos" -c:v libwebp -quality 90 -compression_level 6 -preset picture img/logo.webp
+ffmpeg -i master.png -vf "scale=128:128:flags=lanczos" -pix_fmt rgba img/logo.png
+```
+
+The logo is shown **without any ring or circle wrapper** — it is already circular, so the old `.brand .ring` and `.about-visual .ring-xl` frames are neutralised in `rediseno.css`. Its interior is dark green, so on the site's own green surfaces (loader, drawer, footer) it needs the halo in section 52 of `rediseno.css` to detach from the background; on light surfaces a plain soft shadow is enough. Do not swap the halo for a solid disc or a box.
+
+Both logo files are covered by the cache-busting `?v=` hash, so a redesign of the mark cannot be served stale.
+
+`media/` holds the MP4s and their `poster-*.jpg` (each poster is a real frame pulled from its own clip with `ffmpeg -ss … -frames:v 1`, not a loose photo). The whole folder is ~47 MB.
+
+The three clips from the 7-sep-2026 batch are `recreacion-campo.mp4`, `integracion-comunidad.mp4` and `taller-ninez.mp4`; they open the showcase rail, so the `poster=` hardcoded on `.vshow-main video` must match the **first** `.vs-item` (`ui.js` selects it on load). The first two are landscape at 720 px, the third is vertical at 360×640 and exercises the `.vertical` branch of the frame.
 
 **Web encoding profile.** These clips come from phones and are already heavily compressed, so CRF alone does not control the output size — encoding `comunidad-2026.mp4` at CRF 30 actually produced 47 MB, and `alianza-360.mp4` at CRF 28 came out *larger* than the original. Use **two-pass VBR with an explicit bitrate** when a target size matters:
 
@@ -166,4 +198,8 @@ That took `comunidad-2026.mp4` from 69 MB to 15.9 MB (360x640, 24 fps, 391 kbps)
 
 `media/alianza-360.mp4` is **not** wired into the showcase: it carries another organization's branding ("Movimiento Misionero Mundial") and a CapCut watermark. The file is kept in case that association is deliberate, but do not put it back without checking.
 
-`docs/formatos/` holds the four downloadable official forms; `docs/` also keeps the source spreadsheet and PDF of the project list.
+`docs/formatos/` holds the downloadable official forms; `docs/` also keeps the source spreadsheet and PDF of the project list, plus `Brochure-Institucional-Corpoteve-2026.pdf`.
+
+**The brochure** is the Corporation's own 7-page institutional presentation (identity, purpose, ten strategic axes, programmes, portfolio, how to take part). It is linked from the `#brochure` band on `nosotros.html` (CSS section 55) and from the "Navegación" column of the footer on all six pages. Its cover is an **AI-generated illustration** and the PDF says so on the page — that is why the band draws a CSS "cover" instead of lifting the image out of the document.
+
+It arrived at 8,7 MB because its cover was embedded as a 2048×2048 *lossless* Flate bitmap (7,8 MB on its own). Recompressing that single stream as JPEG and rebuilding the xref took the file to **1,5 MB** with no other change; the untouched original is outside the site folder. Page 6 of the brochure quotes the portfolio figures as of 9-sep-2026 (113 / 773.975 / $1,84 billones / 23), one cut behind the table now published — worth telling the Corporation before they hand it out.

@@ -328,7 +328,7 @@
       if(!rows.length){mount.innerHTML='<tr><td colspan="7" class="pj-empty">No se encontraron proyectos con esos criterios.</td></tr>';return;}
       var html='';
       rows.forEach(function(d){
-        var clase=(d.estado==='Estudio')?'est':'reg';
+        var clase=(d.estado==='Estudio')?'est':(d.estado==='Aprobados')?'apr':'reg';
         html+='<tr><td class="c-num">'+d.n+'</td>'+
           '<td>'+esc(d.nombre)+'</td>'+
           '<td>'+esc(d.dep||'—')+'<br><span style="color:var(--niebla);font-size:.85em">'+esc(d.mun||'')+'</span></td>'+
@@ -406,7 +406,9 @@
       '':       {t:'Portafolio completo',
                  s:'Todos los proyectos radicados ante la Corporación, con su etapa en el ciclo.'},
       'Estudio':{t:'Proyectos en estudio',
-                 s:'Iniciativas radicadas que están en formulación o estructuración técnica y financiera. Al superar esta etapa pasan a viables.'}
+                 s:'Iniciativas radicadas que están en formulación o estructuración técnica y financiera. Al superar esta etapa pasan a viables.'},
+      'Aprobados':{t:'Proyectos aprobados',
+                 s:'Proyectos avalados por el equipo técnico y aprobados por la mesa internacional. Pasan a la fase de financiación y ejecución.'}
     };
 
     tabs.forEach(function(b){

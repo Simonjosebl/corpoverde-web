@@ -986,6 +986,7 @@ body.cargando{overflow:hidden}
 .pj-estado::before{content:'';width:6px;height:6px;border-radius:50%;background:currentColor}
 .pj-estado.est{background:rgba(5,140,187,.12);color:#046B90}
 .pj-estado.reg{background:rgba(111,168,40,.14);color:#4B7A16}
+.pj-estado.apr{background:rgba(20,71,47,.13);color:#0F3A28;box-shadow:inset 0 0 0 1px rgba(20,71,47,.22)}
 
 /* ============================================================================
    17. RESPONSIVE
@@ -2411,3 +2412,258 @@ body > section.sec:last-of-type{padding-bottom:clamp(2.4rem,4.4vw,3.6rem)}
 
 /* El aviso de las etapas sin datos no necesita tanto alto */
 .pipe-empty{padding:clamp(1.8rem,3.4vw,2.6rem) clamp(1.3rem,3vw,2.2rem)}
+
+/* ============================================================================
+   52. LOGO NUEVO (emblema CPV)
+   ----------------------------------------------------------------------------
+   El emblema es verde oscuro con filo dorado. Sobre fondo claro se lee solo,
+   pero sobre las superficies verdes del sitio (loader, drawer, pie) su interior
+   se funde con el fondo. Se le añade un halo tenue —no un recuadro— para que
+   despegue, y un poco más de tamaño donde antes iba muy pequeño.
+   ========================================================================== */
+.loader-mark img,
+.drawer-head img,
+.footer .brand .ring img{
+  filter:
+    drop-shadow(0 0 16px rgba(226,240,205,.22))
+    drop-shadow(0 10px 24px rgba(0,0,0,.55));
+}
+
+/* El sello tiene más detalle que el logo anterior: gana unos píxeles */
+.brand .ring img{width:60px;height:60px}
+.header.shrunk .brand .ring img{width:50px;height:50px}
+.drawer-head img{width:54px;height:54px}
+.footer .brand .ring img{width:64px;height:64px}
+
+/* En claro basta con una sombra suave que lo asiente */
+.header .brand .ring img{
+  filter:drop-shadow(0 5px 14px rgba(11,46,31,.22));
+}
+
+@media (max-width:900px){
+  .brand .ring img{width:52px;height:52px}
+}
+
+/* ============================================================================
+   53. BANDERA DE COLOMBIA EN LA BARRA SUPERIOR
+   ----------------------------------------------------------------------------
+   Un chip diminuto junto a "Colombia". En reposo es casi neutro; al pasar el
+   cursor por el grupo se enciende en amarillo bandera —un destello, no un
+   neón— y el croquis lo acompaña. La idea es que se note sin hacer ruido.
+   ========================================================================== */
+.tb-left{
+  cursor:default;
+  transition:color .3s var(--ease);
+}
+.co-bandera{
+  display:inline-flex;width:19px;height:13px;flex:none;
+  border-radius:3px;overflow:hidden;
+  /* Mismo brillo en reposo que el croquis: filo cálido y un halo de 6 px */
+  border:1px solid rgba(252,209,22,.5);
+  box-shadow:
+    0 0 6px rgba(252,209,22,.45),
+    0 1px 3px rgba(0,0,0,.35);
+  filter:saturate(1.2) brightness(1.08);
+  transition:transform .45s var(--ease),
+             box-shadow .45s var(--ease),
+             border-color .35s,
+             filter .35s;
+}
+.co-bandera svg{width:100%;height:100%;display:block}
+
+.tb-left:hover{color:#fff}
+.tb-left:hover .co-bandera{
+  transform:translateY(-1px) scale(1.14);
+  border-color:rgba(252,209,22,.9);
+  filter:saturate(1.35) brightness(1.18);
+  box-shadow:
+    0 0 0 1px rgba(252,209,22,.4),
+    0 0 13px rgba(252,209,22,.65),
+    0 0 26px rgba(252,209,22,.32);
+}
+/* El croquis se suma al guiño, en ámbar, sin robar protagonismo */
+.tb-left:hover .co-mapa{
+  color:#FCD116;
+  filter:drop-shadow(0 0 7px rgba(252,209,22,.5));
+}
+.co-mapa{transition:color .35s var(--ease),filter .4s var(--ease)}
+
+@media (prefers-reduced-motion: reduce){
+  .co-bandera{transition:box-shadow .01ms,border-color .01ms}
+  .tb-left:hover .co-bandera{transform:none}
+}
+
+
+/* ============================================================================
+   54. PROCESO OFICIAL: TRES FASES Y DIAGRAMA DE NUEVE PASOS
+   Las tarjetas .paso ahora llevan la lista de documentos de cada fase, y el
+   diagrama del documento oficial se publica como HTML (no como imagen) para
+   que sea responsive, traducible y legible con lector de pantalla.
+   ========================================================================== */
+.pasos-3{grid-template-columns:repeat(auto-fit,minmax(min(280px,100%),1fr))}
+.paso-lista{
+  list-style:none;margin:.9rem 0 0;padding:.85rem 0 0;
+  border-top:1px dashed var(--linea-2);display:grid;gap:.4rem;
+}
+.paso-lista li{
+  position:relative;padding-left:1.4rem;font-size:.82rem;line-height:1.5;
+  color:var(--tinta-2);
+}
+.paso-lista li::before{
+  content:'';position:absolute;left:0;top:.48em;width:7px;height:7px;
+  border-radius:50%;background:var(--c,var(--lima));
+}
+
+/* --- el diagrama ---------------------------------------------------------- */
+.flujo{
+  list-style:none;margin:2.2rem 0 0;padding:0;position:relative;
+  display:grid;gap:.85rem;
+}
+.flujo::before{
+  content:'';position:absolute;left:21px;top:.6rem;bottom:.6rem;width:2px;
+  background:linear-gradient(180deg,rgba(138,195,45,.15),var(--lima) 18%,var(--azul) 82%,rgba(5,140,187,.15));
+  border-radius:2px;
+}
+.flujo-fase{
+  display:flex;align-items:center;gap:.7rem;margin:.9rem 0 .1rem;
+  position:relative;z-index:1;
+}
+.flujo-fase:first-child{margin-top:0}
+.flujo-fase span{
+  display:inline-flex;align-items:center;gap:.45rem;
+  margin-left:56px;padding:.32rem .8rem;border-radius:99px;
+  background:linear-gradient(135deg,var(--bosque),var(--bosque-3));color:#fff;
+  font-family:var(--display);font-weight:700;font-size:.74rem;letter-spacing:.04em;
+  text-transform:uppercase;
+  box-shadow:0 10px 22px -14px rgba(11,46,31,.9);
+}
+.flujo-it{
+  display:grid;grid-template-columns:44px 1fr;gap:.9rem;align-items:start;
+  position:relative;z-index:1;
+}
+.flujo-n{
+  width:44px;height:44px;border-radius:14px;display:grid;place-items:center;
+  font-family:var(--display);font-weight:800;font-size:1.02rem;color:#fff;
+  background:linear-gradient(140deg,var(--bosque-2),var(--bosque-3));
+  box-shadow:0 10px 24px -14px rgba(11,46,31,.95),0 0 0 5px var(--crema);
+  transition:transform .45s var(--ease),box-shadow .45s var(--ease);
+}
+.flujo-card{
+  background:#fff;border:1px solid var(--linea-2);border-radius:var(--rad);
+  padding:1rem 1.15rem;position:relative;
+  display:grid;grid-template-columns:1fr auto;gap:.2rem 1rem;align-items:start;
+  transition:transform .5s var(--ease),box-shadow .5s var(--ease),border-color .4s;
+}
+.flujo-card h3{grid-column:1;font-size:.98rem;margin:0 0 .3rem}
+.flujo-card p{grid-column:1;font-size:.86rem;color:var(--niebla);line-height:1.6;margin:0}
+.flujo-ic{
+  grid-column:2;grid-row:1 / span 2;
+  width:40px;height:40px;border-radius:12px;display:grid;place-items:center;
+  background:linear-gradient(140deg,rgba(138,195,45,.16),rgba(5,140,187,.14));
+  color:var(--bosque);
+}
+.flujo-ic svg{width:20px;height:20px}
+.flujo-it:hover .flujo-card{
+  transform:translateX(4px);box-shadow:var(--sombra-card);
+  border-color:rgba(138,195,45,.45);
+}
+.flujo-it:hover .flujo-n{transform:scale(1.07)}
+
+.flujo-pie{
+  margin-top:1.8rem;padding:1.2rem 1.35rem;border-radius:var(--rad);
+  background:linear-gradient(135deg,rgba(138,195,45,.13),rgba(5,140,187,.1));
+  border:1px solid var(--linea-2);
+  display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1rem;
+}
+.flujo-pie b{display:block;font-family:var(--display);font-size:1.02rem}
+.flujo-pie span{display:block;font-size:.86rem;color:var(--niebla);margin-top:.2rem}
+.flujo-pie .btn svg{width:18px;height:18px;margin-right:.4rem}
+
+@media (max-width:600px){
+  .flujo{gap:.7rem}
+  .flujo::before{left:17px}
+  .flujo-it{grid-template-columns:36px 1fr;gap:.7rem}
+  .flujo-n{width:36px;height:36px;border-radius:12px;font-size:.9rem;box-shadow:0 8px 18px -12px rgba(11,46,31,.95),0 0 0 4px var(--crema)}
+  .flujo-fase span{margin-left:46px;font-size:.68rem}
+  .flujo-card{padding:.9rem 1rem;grid-template-columns:1fr}
+  .flujo-ic{display:none}
+  .flujo-pie{flex-direction:column;align-items:flex-start}
+  .flujo-pie .btn{width:100%;justify-content:center}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .flujo-it:hover .flujo-card,.flujo-it:hover .flujo-n{transform:none}
+}
+
+
+/* ============================================================================
+   55. BROCHURE INSTITUCIONAL
+   La "tapa" es CSS puro, no una miniatura del PDF: la portada del documento
+   es una ilustración generada con IA y sacarla de contexto se leería como una
+   foto de terreno. Aquí sólo evoca un impreso.
+   ========================================================================== */
+.brochure{
+  display:grid;grid-template-columns:minmax(210px,270px) 1fr;gap:clamp(1.4rem,3.4vw,2.8rem);
+  align-items:center;
+}
+.br-tapa{
+  position:relative;aspect-ratio:1/1.294;border-radius:16px;overflow:hidden;
+  padding:1.5rem 1.3rem;display:flex;flex-direction:column;justify-content:flex-end;
+  color:#fff;isolation:isolate;
+  background:linear-gradient(155deg,var(--bosque) 0%,var(--bosque-3) 58%,#1b5c3a 100%);
+  box-shadow:var(--sombra-alta),inset 0 0 0 1px rgba(255,255,255,.07);
+  transform:rotate(-1.6deg);
+  transition:transform .6s var(--ease),box-shadow .6s var(--ease);
+}
+.brochure:hover .br-tapa{transform:rotate(0deg) translateY(-4px)}
+.br-tapa::before{
+  content:'';position:absolute;inset:0;z-index:-1;
+  background:radial-gradient(120% 80% at 85% 8%,rgba(138,195,45,.35),transparent 60%);
+}
+.br-tapa::after{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:9px;
+  background:linear-gradient(180deg,var(--lima),var(--azul));
+}
+.br-sello{
+  position:absolute;top:1.2rem;left:1.3rem;width:52px;height:52px;border-radius:50%;
+  display:grid;place-items:center;
+  box-shadow:0 0 0 1px rgba(255,255,255,.16),0 0 26px -6px rgba(138,195,45,.75);
+}
+.br-sello img{width:100%;height:100%;object-fit:contain;border-radius:50%}
+.br-tapa b{
+  font-family:var(--display);font-weight:800;line-height:1.08;
+  font-size:clamp(1.25rem,2.4vw,1.6rem);letter-spacing:-.01em;
+}
+.br-anio{
+  font-family:var(--display);font-weight:800;font-size:1.9rem;color:var(--lima-2);
+  line-height:1;margin-top:.25rem;
+}
+.br-pie{
+  margin-top:.9rem;padding-top:.7rem;border-top:1px solid rgba(255,255,255,.16);
+  font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:rgba(255,255,255,.72);
+}
+.br-texto{min-width:0}
+.br-texto .lead{margin-bottom:1.3rem}
+.br-indice{
+  list-style:none;margin:0 0 1.5rem;padding:0;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(min(215px,100%),1fr));gap:.65rem 1.4rem;
+}
+.br-indice li{display:grid;grid-template-columns:auto 1fr;gap:.65rem;align-items:baseline}
+.br-n{
+  font-family:var(--display);font-weight:800;font-size:.78rem;color:var(--lima);
+  letter-spacing:.02em;
+}
+.br-indice b{display:block;font-size:.9rem}
+.br-indice span{display:block;font-size:.8rem;color:var(--niebla);line-height:1.5}
+.br-texto .btn svg{width:18px;height:18px;margin-right:.45rem}
+
+@media (max-width:760px){
+  .brochure{grid-template-columns:1fr}
+  .br-tapa{max-width:230px;margin:0 auto;transform:none}
+  .brochure:hover .br-tapa{transform:translateY(-3px)}
+  .br-texto{text-align:left}
+  .br-texto .btn{width:100%;justify-content:center;white-space:normal;text-align:center;line-height:1.35}
+}
+@media (prefers-reduced-motion: reduce){
+  .br-tapa,.brochure:hover .br-tapa{transform:none;transition:none}
+}
