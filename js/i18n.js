@@ -847,7 +847,14 @@
   "204 KB":"204 KB",
   "Cada documento, en su fase.":"Each document in its own phase.",
   "El primer correo lleva tres documentos: el formulario diligenciado, el documento técnico y el presupuesto del proyecto. Los documentos SARLAFT y sus soportes (Cámara de Comercio con menos de 3 meses, RUT, cédula del representante legal y estados financieros) se presentan en la segunda fase, cuando el proyecto ya fue declarado viable. Aun así, descárgalos desde ya: los envíos incompletos alargan la revisión.":"The first email carries three documents: the completed form, the technical document and the project budget. The SARLAFT documents and their supporting papers (chamber of commerce certificate less than 3 months old, tax registration, the legal representative's ID and financial statements) are submitted in the second phase, once the project has been declared feasible. Download them now anyway: incomplete submissions slow the review down.",
-  "Estos son los documentos que debes diligenciar y devolvernos. Cada tarjeta te dice para qué sirve el documento, en qué fase del proceso se pide y si es obligatorio.":"These are the documents you need to fill in and send back. Each card tells you what the document is for, which phase of the process asks for it and whether it is mandatory."
+  "Estos son los documentos que debes diligenciar y devolvernos. Cada tarjeta te dice para qué sirve el documento, en qué fase del proceso se pide y si es obligatorio.":"These are the documents you need to fill in and send back. Each card tells you what the document is for, which phase of the process asks for it and whether it is mandatory.",
+  "Paginación de proyectos":"Project pagination",
+  "Páginas":"Pages",
+  "Página anterior":"Previous page",
+  "Página siguiente":"Next page",
+  "Por página":"Per page",
+  "Proyectos por página":"Projects per page",
+  "Todos":"All"
   };
 
   /* ==========================================================================

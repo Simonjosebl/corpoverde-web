@@ -2667,3 +2667,74 @@ body > section.sec:last-of-type{padding-bottom:clamp(2.4rem,4.4vw,3.6rem)}
 @media (prefers-reduced-motion: reduce){
   .br-tapa,.brochure:hover .br-tapa{transform:none;transition:none}
 }
+
+
+/* ============================================================================
+   56. PAGINACIÓN DE LA TABLA DE PROYECTOS
+   Tres zonas fijas: a la izquierda cuántas páginas hay y qué tramo se ve, en
+   el centro los números (no solo "siguiente") y a la derecha el tamaño de
+   página. En móvil se apilan y los números siguen centrados.
+   ========================================================================== */
+.pj-pager{
+  margin-top:.9rem;padding:.75rem .9rem;border-radius:var(--rad);
+  background:#fff;border:1px solid var(--linea-2);box-shadow:var(--sombra-card);
+  display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:.9rem;
+}
+.pj-pager[hidden]{display:none}
+
+/* --- izquierda: cuántas páginas -------------------------------------------- */
+.pjp-info{min-width:0;line-height:1.3}
+.pjp-info b{
+  display:block;font-family:var(--display);font-size:.92rem;color:var(--bosque);
+  letter-spacing:-.01em;
+}
+.pjp-info span{display:block;font-size:.78rem;color:var(--niebla);margin-top:.1rem}
+
+/* --- centro: los números --------------------------------------------------- */
+.pjp-nav{display:flex;align-items:center;gap:.3rem;justify-self:center}
+.pjp-nums{display:flex;align-items:center;gap:.3rem;flex-wrap:wrap;justify-content:center}
+.pjp-b{
+  min-width:36px;height:36px;padding:0 .5rem;border-radius:11px;
+  display:inline-flex;align-items:center;justify-content:center;
+  border:1px solid var(--linea-2);background:#fff;color:var(--bosque);
+  font-family:var(--display);font-weight:700;font-size:.86rem;line-height:1;
+  cursor:pointer;
+  transition:background .3s var(--ease),border-color .3s,color .3s,transform .3s var(--ease);
+}
+.pjp-b:hover:not(:disabled):not(.on){
+  border-color:rgba(138,195,45,.55);background:rgba(138,195,45,.1);transform:translateY(-1px);
+}
+.pjp-b:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
+.pjp-b.on{
+  background:linear-gradient(140deg,var(--bosque),var(--bosque-3));
+  border-color:transparent;color:#fff;cursor:default;
+  box-shadow:0 8px 18px -12px rgba(11,46,31,.95);
+}
+.pjp-b:disabled{opacity:.35;cursor:not-allowed}
+.pjp-flecha svg{width:17px;height:17px}
+.pjp-hueco{
+  min-width:22px;text-align:center;color:var(--niebla);
+  font-weight:700;letter-spacing:.06em;user-select:none;
+}
+
+/* --- derecha: cuántos por página ------------------------------------------- */
+.pjp-tam{
+  display:flex;align-items:center;gap:.5rem;justify-self:end;
+  font-size:.82rem;color:var(--niebla);white-space:nowrap;
+}
+.pjp-tam .pj-select{padding:.45rem 1.9rem .45rem .7rem;font-size:.85rem;border-radius:11px}
+
+@media (max-width:860px){
+  .pj-pager{grid-template-columns:1fr;justify-items:center;text-align:center;gap:.75rem}
+  .pjp-info{text-align:center}
+  .pjp-tam{justify-self:center}
+  .pjp-nav{order:2}
+  .pjp-tam{order:3}
+}
+@media (max-width:420px){
+  .pjp-b{min-width:34px;height:34px;font-size:.82rem;padding:0 .35rem}
+  .pjp-nums{gap:.22rem}
+}
+@media (prefers-reduced-motion: reduce){
+  .pjp-b,.pjp-b:hover{transition:none;transform:none}
+}

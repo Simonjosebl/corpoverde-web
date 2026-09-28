@@ -248,6 +248,34 @@
     var estadoActivo='';
     var countEl=document.getElementById('pjCount');
     var sortKey='n', sortDir=1;
+
+    /* --- paginación ------------------------------------------------------
+       porPagina 0 significa "todos". La página se reinicia con cualquier
+       cambio de filtro, de orden o de etapa: de lo contrario el visitante se
+       queda mirando una página que ya no existe. */
+    var pager=document.getElementById('pjPager');
+    var pagNums=document.getElementById('pjpNums');
+    var pagPagina=document.getElementById('pjpPagina');
+    var pagRango=document.getElementById('pjpRango');
+    var selTam=document.getElementById('pjPorPagina');
+    var porPagina=selTam?(parseInt(selTam.value,10)||0):25;
+    var pagina=1;
+    var quieto=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    var TEXTOS={
+      es:{pag:'Página %a de %b', una:'Página única',
+          rango:'Proyectos %a a %b de %t', vacio:'Sin resultados'},
+      en:{pag:'Page %a of %b', una:'Single page',
+          rango:'Projects %a to %b of %t', vacio:'No results'}
+    };
+    /* i18n.js publica window.CPV_I18N al final de su IIFE, después de aplicar
+       el idioma inicial, así que en el primer aviso todavía no existe: el
+       idioma se toma del propio evento. */
+    var idiomaPager='es';
+    function textos(){ return TEXTOS[idiomaPager==='en'?'en':'es']; }
+    function plantilla(s,a,b,t){
+      return s.replace('%a',a).replace('%b',b).replace('%t',t);
+    }
     var fmt=function(v){return v==null?'—':v.toLocaleString('es-CO');};
     var money=function(v){return v==null?'—':'$'+v.toLocaleString('es-CO');};
     /* Las filas se inyectan con innerHTML: todo campo de texto pasa por aquí */
@@ -325,9 +353,22 @@
         countEl.textContent = rows.length + ' de ' + base + ' proyectos' +
           (estadoActivo ? ' en ' + estadoActivo.toLowerCase() : '');
       }
-      if(!rows.length){mount.innerHTML='<tr><td colspan="7" class="pj-empty">No se encontraron proyectos con esos criterios.</td></tr>';return;}
+      if(!rows.length){
+        mount.innerHTML='<tr><td colspan="7" class="pj-empty">No se encontraron proyectos con esos criterios.</td></tr>';
+        pintarPager(0,1,0,0);
+        return;
+      }
+      /* La tabla pinta solo la página activa; las cifras de arriba y el
+         contador siguen midiendo el filtro completo, para que no cambien
+         al pasar de página. */
+      var paginas = porPagina ? Math.max(1,Math.ceil(rows.length/porPagina)) : 1;
+      if(pagina>paginas) pagina=paginas;
+      if(pagina<1) pagina=1;
+      var desde = porPagina ? (pagina-1)*porPagina : 0;
+      var pagRows = porPagina ? rows.slice(desde,desde+porPagina) : rows;
+      pintarPager(rows.length,paginas,desde,pagRows.length);
       var html='';
-      rows.forEach(function(d){
+      pagRows.forEach(function(d){
         var clase=(d.estado==='Estudio')?'est':(d.estado==='Aprobados')?'apr':'reg';
         html+='<tr><td class="c-num">'+d.n+'</td>'+
           '<td>'+esc(d.nombre)+'</td>'+
@@ -339,10 +380,86 @@
       });
       mount.innerHTML=html;
     }
-    if(search) search.addEventListener('input',render);
-    if(sectorSel) sectorSel.addEventListener('change',render);
-    if(depSel) depSel.addEventListener('change',function(){syncMun();render();});
-    if(munSel) munSel.addEventListener('change',render);
+    /* Dibuja la barra: a la izquierda cuántas páginas hay, en el centro los
+       números y a la derecha el tamaño de página. */
+    function pintarPager(total,paginas,desde,enPagina){
+      if(!pager) return;
+      pager.hidden = !total;
+      if(!total){
+        if(pagNums) pagNums.innerHTML='';
+        if(pagPagina) pagPagina.textContent='';
+        if(pagRango) pagRango.textContent='';
+        return;
+      }
+      var t=textos();
+      if(pagPagina) pagPagina.textContent = paginas>1 ? plantilla(t.pag,pagina,paginas) : t.una;
+      if(pagRango) pagRango.textContent = plantilla(t.rango,desde+1,desde+enPagina,total);
+
+      if(pagNums){
+        var lista=ventana(pagina,paginas), html='';
+        lista.forEach(function(x){
+          if(x==='…'){ html+='<span class="pjp-hueco" aria-hidden="true">…</span>'; return; }
+          html+='<button type="button" class="pjp-b pjp-num'+(x===pagina?' on':'')+'"'+
+                (x===pagina?' aria-current="page"':'')+' data-pag="'+x+'">'+x+'</button>';
+        });
+        pagNums.innerHTML=html;
+      }
+      pager.querySelectorAll('.pjp-flecha').forEach(function(b){
+        var fin = b.getAttribute('data-ir')==='prev' ? pagina<=1 : pagina>=paginas;
+        b.disabled=fin;
+      });
+    }
+
+    /* Hasta siete ranuras: primera, última, la actual y sus vecinas. */
+    function ventana(p,total){
+      var out=[], i;
+      if(total<=7){ for(i=1;i<=total;i++) out.push(i); return out; }
+      if(p<=4){ for(i=1;i<=5;i++) out.push(i); return out.concat(['…',total]); }
+      if(p>=total-3){ out=[1,'…']; for(i=total-4;i<=total;i++) out.push(i); return out; }
+      return [1,'…',p-1,p,p+1,'…',total];
+    }
+
+    function irArriba(){
+      var caja=document.querySelector('.pj-table-wrap');
+      if(!caja||!caja.getBoundingClientRect) return;
+      var y=caja.getBoundingClientRect().top+(window.pageYOffset||0)-110;
+      if(window.scrollTo) window.scrollTo({top:y<0?0:y,behavior:quieto?'auto':'smooth'});
+    }
+
+    function verPagina(p){
+      if(p===pagina) return;
+      pagina=p;
+      render();
+      irArriba();
+    }
+
+    if(pagNums) pagNums.addEventListener('click',function(e){
+      var b=e.target.closest?e.target.closest('.pjp-num'):null;
+      if(b) verPagina(parseInt(b.getAttribute('data-pag'),10));
+    });
+    if(pager) pager.querySelectorAll('.pjp-flecha').forEach(function(b){
+      b.addEventListener('click',function(){
+        verPagina(pagina+(b.getAttribute('data-ir')==='prev'?-1:1));
+      });
+    });
+    if(selTam) selTam.addEventListener('change',function(){
+      porPagina=parseInt(selTam.value,10)||0;
+      pagina=1;
+      render();
+      irArriba();
+    });
+    document.addEventListener('cpv:idioma',function(e){
+      idiomaPager=(e&&e.detail&&e.detail.idioma) ||
+                  (window.CPV_I18N&&window.CPV_I18N.idioma()) || 'es';
+      render();
+    });
+
+    /* Cualquier cambio de filtro devuelve a la primera página */
+    function refiltrar(){ pagina=1; render(); }
+    if(search) search.addEventListener('input',refiltrar);
+    if(sectorSel) sectorSel.addEventListener('change',refiltrar);
+    if(depSel) depSel.addEventListener('change',function(){syncMun();refiltrar();});
+    if(munSel) munSel.addEventListener('change',refiltrar);
     /* Cifras de cabecera: se recalculan con lo que hay en pantalla, para que
        nunca contradigan a la tabla que tienen debajo. */
     function cifras(rows){
@@ -378,6 +495,7 @@
         if(sectorSel) sectorSel.value='';
         if(depSel){ depSel.value=''; syncMun(); }
         if(munSel) munSel.value='';
+        pagina=1;
         render();
       }
     };
@@ -386,6 +504,7 @@
       th.addEventListener('click',function(){
         var k=th.getAttribute('data-key');
         if(sortKey===k) sortDir*=-1; else {sortKey=k;sortDir=1;}
+        pagina=1;
         render();
       });
     });

@@ -101,13 +101,23 @@ Each tab carries three attributes:
 - `data-estado` — present only on stages backed by data. Its value is matched against `PROYECTOS[].estado`; the empty string means "no filter". `app.js` passes it to `window.CPV_PROYECTOS.filtrarEstado()`, which clears the other filters and re-renders.
 - `data-ancla` — the hash this tab answers to (`proyectos.html#estudio` still works even though no `#estudio` element exists any more).
 
-The four `.pj-stat` figures carry `data-pj="n|ben|val|dep"` and are **recomputed from the rows actually on screen**, so they can never contradict the table below them; the label of the first one (`data-pj-tx="n"`) changes with the view too. Below a billion the investment figure switches from *billones* to *mil millones* on its own. The `#pjVistaTit` / `#pjVistaSub` pair names the active view.
+The four `.pj-stat` figures carry `data-pj="n|ben|val|dep"` and are **recomputed from the current filter**, so they can never contradict the table below them; the label of the first one (`data-pj-tx="n"`) changes with the view too. They describe the whole filtered selection, not the visible page — a figure that moved every time you turned a page would be useless. Below a billion the investment figure switches from *billones* to *mil millones* on its own. The `#pjVistaTit` / `#pjVistaSub` pair names the active view.
 
 To give another stage real data: set the matching `estado` on the records in `proyectos-data.js`, then add `data-estado="<Estado>"` and `data-panel="activados"` to its tab and an entry to the `VISTAS` table in `app.js`. Delete its now-unused `.pipe-panel`. Stages left without `data-estado` keep showing their "coming soon" notice.
 
 Adding a stage still means touching the tab, the nav mega-menu and drawer groups on all six pages, and the footer.
 
 **Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **110 records** from the "Proyectos Activados Presentados Proteverde" sheet (28-sep-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Aprobados"`, `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip (`.apr` / `.est` / `.reg`). It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
+
+**Pagination.** The table paints one page at a time. `#pjPager` (markup in `proyectos.html`, styles in CSS section 56, logic in the same `app.js` IIFE as the table) is a three-zone bar: how many pages on the left, the numbered buttons in the middle, the page size on the right.
+
+- `porPagina` starts at 25 and comes from `#pjPorPagina`; the value `0` means "all".
+- `ventana(pagina, paginas)` builds the number strip with at most seven slots — first, last, the current page and its neighbours, with `…` filling the gaps. Below eight pages every number is shown.
+- `pagina` resets to 1 on **every** change of search, sector, department, municipality, sort order, page size and pipeline stage. Forgetting one of those leaves the visitor on a page that no longer exists.
+- Turning a page scrolls back to the top of the table (`irArriba`), honouring `prefers-reduced-motion`.
+- With no results the whole bar is hidden via the `hidden` attribute.
+
+The left-hand line is the one piece of copy the runtime builds itself, so it carries `data-no-traducir` and is painted from the local `TEXTOS` table instead of `DIC`. It cannot read `window.CPV_I18N` on the first pass — i18n.js publishes that object at the end of its IIFE, *after* it has already applied the initial language — so the language comes from `e.detail.idioma` on the `cpv:idioma` event. Everything else in the bar (`Por página`, `Todos`, the aria-labels) is static HTML and lives in `DIC` like the rest.
 
 The table is deliberately **not selectable or copyable** (`user-select:none` + `-webkit-touch-callout:none` on `table.pj`/`.pj-table-wrap`) and there is no export/download button — don't reintroduce one.
 
