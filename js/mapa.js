@@ -272,7 +272,7 @@
           '<em>' + METRICAS[metrica].fmt(d[metrica]) + '</em></span>' +
           '<span class="mi-r-bar"><i style="width:' + pct + '%"></i></span>' +
           '<span class="mi-r-sub">' + d.municipios + ' municipio' + (d.municipios===1?'':'s') +
-          ' · ' + esc(d.sectorTop) + '</span>' +
+          ', ' + esc(d.sectorTop) + '</span>' +
         '</span></li>';
     }).join('');
 

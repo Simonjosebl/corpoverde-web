@@ -77,6 +77,8 @@ The site is authored in Spanish; English is a live translation. `DIC` maps the *
 - Language choice: `?lang=en` / `#lang=en` wins, then `localStorage['cpv-idioma']`, then autodetect (Spanish if any `navigator.languages` entry starts with `es` **or** the timezone is `America/Bogota`; English otherwise).
 - Switching fires a `cpv:idioma` event on `document`; `ui.js` listens to it to repaint the animated figures with the right locale and suffix.
 
+**Punctuation in the copy.** The interpunct (`·`) is banned from anything a visitor reads. It had spread through page titles, the topbar, the mega-menu CTA, the process phases and the map ranking, and it reads as machine-written filler. Use what Spanish already has: a comma for apposition (`Colombia, cobertura nacional`), a colon for a label (`Fase 1: presentación`), `y` for a pair, a pipe only in `<title>`. The same goes for the em dash used as a parenthesis (`—paso a paso—`) and for the "X, and not Y" flourish. When you add copy, add it without them.
+
 Style convention across all scripts: ES5 (`var`, `function`, IIFEs), no build/transpile, Spanish comments. Match it.
 
 ### Reusable mechanisms
@@ -105,23 +107,34 @@ To give another stage real data: set the matching `estado` on the records in `pr
 
 Adding a stage still means touching the tab, the nav mega-menu and drawer groups on all six pages, and the footer.
 
-**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **114 records** from the "Proyectos Activados Presentados Proteverde" sheet (10-sep-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Aprobados"`, `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip (`.apr` / `.est` / `.reg`). It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
+**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **110 records** from the "Proyectos Activados Presentados Proteverde" sheet (28-sep-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Aprobados"`, `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip (`.apr` / `.est` / `.reg`). It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
 
 The table is deliberately **not selectable or copyable** (`user-select:none` + `-webkit-touch-callout:none` on `table.pj`/`.pj-table-wrap`) and there is no export/download button — don't reintroduce one.
 
-The `.pj-stats` figures above the table are hardcoded and must be kept in sync with the data: **114 records, 776.075 beneficiaries, $1,85 billones COP, 22 departments** (the record count and the 22 figure also appear in the `.credenciales` band on `index.html`, and `$1,85 billones` is a `DIC` key in `i18n.js`). Recompute with:
+Figures repeated outside the data file must be kept in sync with it by hand. There are **five** places, and the last two are easy to miss because they are not `data-pj`:
+
+| where | currently |
+|---|---|
+| `proyectos.html` `.pj-stats` (`data-pj`) | 110 / 762.195 / $1,76 billones / 22 |
+| `index.html` `.credenciales` (`data-cifra`) | 110 projects, 22 departments |
+| `index.html` hero `.hf-tx` (`data-cifra`) | 110 projects |
+| `proyectos.html` `<meta name="description">` | 110 projects, $1,7 billones |
+| `js/i18n.js` `DIC` | the `"$1,76 billones"` key | Recompute with:
 
 ```powershell
 node -e "global.window={};require('./js/proyectos-data.js');var p=window.PROYECTOS;console.log(p.length, p.reduce((a,b)=>a+(b.ben||0),0), p.reduce((a,b)=>a+(b.val||0),0))"
 ```
 
-Note: the TOTAL row printed in the source PDF (436.660 / 1.686.082.728.035) does **not** sum every row — it omits rows 1–7 and the rows whose value was stored as text. The site uses the honest full sum, not the PDF's total.
+Every cut of this sheet has arrived with the same handful of defects, and the site cleans them in `proyectos-data.js` rather than reproducing them. For the 28-sep-2026 cut:
 
-Two more things the 10-sep-2026 PDF does that the site does not copy verbatim:
+- Its TOTAL row (404.420 / 1.590.223.485.627) does **not** sum every row. The site publishes the honest full sum instead.
+- Row 91 is blank and the last row repeats the number 111, so the 111 data lines are renumbered 1–110 after one removal.
+- The Chaparral market-hall project is listed **twice**, identically, at rows 2 and 51 (`Aprobados`, 54.809 beneficiaries, $14.099.621.857). Only one is published.
+- Department and municipality are swapped in rows 8, 16, 42 and 45, and row 46 has no department at all. Rows 21, 22, 53 and 75 name a department in the project title that contradicts the department column (Boyacá, Boyacá, Magdalena, Norte de Santander); the title wins.
+- Spelling in the source is inconsistent (`PLAN MESTRO`, `MPLEMENTACION`, `Eduactiva`, `HIDIRCA`, `Granadas`, `Sopetran`, `Puerto Escindido`, `OCRHOMA`). Names are published corrected.
+- Two pairs of rows share a name but differ in beneficiaries (the Beltrán tomato project, 622 and 1.291; the Acacías fish-farming project, 410 and 810). They are separate registrations and both stay.
 
-- Row 91 is blank and row 116 carries no number, so the sheet's 115 data lines are renumbered 1–114 here after one removal.
-- The Chaparral market-hall project appears **twice**: as row 1 (`Aprobados`, $14.099.621.857) and again as row 51 with its previous figure (`Estudio`, $12.543.912.417). Same name, same 54.809 beneficiaries — it is a stale duplicate line, so only the approved row is published.
-- The Timaná (Huila) solar project that was record 50 is **gone** from the new sheet, which is why the department count drops from 23 to 22.
+Two figures in this cut look like copy-paste slips in the source rather than real numbers, and are published as they came: Santa Rosalía's sewer plan carries the same value as the Chaparral market hall ($14.099.621.857), and its beneficiaries went from 400 to 2.400. Worth raising with the Corporation before the next cut.
 
 **Project submission page** (`presentar-proyecto.html`) — in order: three `.paso` cards, one per **official phase** (`#como`), the nine-step **official diagram** (`#flujo`), six `.doc` download cards pointing at `docs/formatos/` (`#formatos`), an eleven-item `.acord` guide to the official form (`#guia`), an FAQ accordion and the contact form.
 
