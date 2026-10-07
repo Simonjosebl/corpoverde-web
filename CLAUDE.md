@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this is
 
-Static marketing site (no build step, no dependencies, no package manager) for **Corporación Protectora Verde**, a Colombian NGO. Six hand-written HTML pages + two stylesheets + six scripts. Source content is in **Spanish** — keep copy, `es-CO` number formatting, and Spanish class/variable names consistent. English is produced at runtime by `js/i18n.js` (see below), never by duplicating pages.
+Static marketing site (no build step, no dependencies, no package manager) for **Corporación Protectora Verde**, a Colombian NGO. Seven hand-written HTML pages + two stylesheets + six scripts. Source content is in **Spanish** — keep copy, `es-CO` number formatting, and Spanish class/variable names consistent. English is produced at runtime by `js/i18n.js` (see below), never by duplicating pages.
 
 ## Running it
 
@@ -28,9 +28,9 @@ node --check js/app.js; node --check js/ui.js; node --check js/mapa.js; node --c
 
 ### Pages and their shared chrome
 
-`index.html`, `nosotros.html`, `programas.html`, `proyectos.html`, `alianzas.html`, `presentar-proyecto.html`.
+`index.html`, `nosotros.html`, `programas.html`, `proyectos.html`, `mujeres.html`, `alianzas.html`, `presentar-proyecto.html`.
 
-The loader, scroll-progress bar, topbar, `<header id="header">` nav (with `.has-sub` mega-menus), `<aside id="drawer">` mobile menu, `.scrim`, footer, WhatsApp float and `#toTop` are **duplicated verbatim in all six pages**. There is no templating or include mechanism — a nav/footer change must be applied to every page by hand, or the pages drift out of sync. When adding a page, copy an existing page's chrome wholesale.
+The loader, scroll-progress bar, topbar, `<header id="header">` nav (with `.has-sub` mega-menus), `<aside id="drawer">` mobile menu, `.scrim`, footer, WhatsApp float and `#toTop` are **duplicated verbatim in all seven pages**. There is no templating or include mechanism — a nav/footer change must be applied to every page by hand, or the pages drift out of sync. When adding a page, copy an existing page's chrome wholesale.
 
 Script order at the bottom of every page:
 
@@ -56,7 +56,7 @@ Behaviors in order: scroll shrink + back-to-top, drawer toggle, scroll-reveal (`
 
 ### `js/ui.js` — the 2026 redesign behaviours
 
-Loaded after `app.js`; every block is a self-guarding IIFE, so the same file is safe on all six pages. Contains: page loader (`#loader`, with a 3.5 s safety timeout), reading-progress bar (`#progreso`), WhatsApp bubble (`#waFlota`, dismissal kept in `sessionStorage`), scroll parallax (`[data-parallax="0.12"]`), 3D card tilt (`[data-tilt]`), the video showcase (`#vshow`), the drag-and-scroll message carousel (`#msgWrap`), the accordion (`.acord-it`), animated figures (`[data-cifra]`, with `data-dec` / `data-pre` / `data-suf`) and background video autoplay (`video[data-fondo]`).
+Loaded after `app.js`; every block is a self-guarding IIFE, so the same file is safe on all seven pages. Contains: page loader (`#loader`, with a 3.5 s safety timeout), reading-progress bar (`#progreso`), WhatsApp bubble (`#waFlota`, dismissal kept in `sessionStorage`), scroll parallax (`[data-parallax="0.12"]`), 3D card tilt (`[data-tilt]`), the video showcase (`#vshow`), the drag-and-scroll message carousel (`#msgWrap`), the accordion (`.acord-it`), animated figures (`[data-cifra]`, with `data-dec` / `data-pre` / `data-suf`) and background video autoplay (`video[data-fondo]`).
 
 Everything respects `prefers-reduced-motion`.
 
@@ -105,9 +105,9 @@ The four `.pj-stat` figures carry `data-pj="n|ben|val|dep"` and are **recomputed
 
 To give another stage real data: set the matching `estado` on the records in `proyectos-data.js`, then add `data-estado="<Estado>"` and `data-panel="activados"` to its tab and an entry to the `VISTAS` table in `app.js`. Delete its now-unused `.pipe-panel`. Stages left without `data-estado` keep showing their "coming soon" notice.
 
-Adding a stage still means touching the tab, the nav mega-menu and drawer groups on all six pages, and the footer.
+Adding a stage still means touching the tab, the nav mega-menu and drawer groups on all seven pages, and the footer.
 
-**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **110 records** from the "Proyectos Activados Presentados Proteverde" sheet (28-sep-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Aprobados"`, `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip (`.apr` / `.est` / `.reg`). It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
+**Projects table** — `js/proyectos-data.js` assigns `window.PROYECTOS`: **111 records** from the "Proyectos Activados Presentados Proteverde" sheet (7-oct-2026 cut), with fields `n, nombre, dep, mun, sector, ben, val, estado`; `ben`/`val` may be `null`, rendered as `—`; `estado` is `"Aprobados"`, `"Estudio"` or `"Registrado/Presentado"` and is rendered as a `.pj-estado` chip (`.apr` / `.est` / `.reg`). It must be loaded **before** `app.js`. The renderer builds rows as an HTML string into `#pjBody` and supports search (`#pjSearch`), sector / department / municipality filters (`#pjSector`, `#pjDep`, `#pjMun`, options derived from the data) and the stage filter driven by the pipeline tabs and click-to-sort on `thead th[data-key]`. Rows go in via `innerHTML`, so every text field passes through the local `esc()` helper — keep it that way for any new field.
 
 **Pagination.** The table paints one page at a time. `#pjPager` (markup in `proyectos.html`, styles in CSS section 56, logic in the same `app.js` IIFE as the table) is a three-zone bar: how many pages on the left, the numbered buttons in the middle, the page size on the right.
 
@@ -125,22 +125,23 @@ Figures repeated outside the data file must be kept in sync with it by hand. The
 
 | where | currently |
 |---|---|
-| `proyectos.html` `.pj-stats` (`data-pj`) | 110 / 762.195 / $1,76 billones / 22 |
-| `index.html` `.credenciales` (`data-cifra`) | 110 projects, 22 departments |
-| `index.html` hero `.hf-tx` (`data-cifra`) | 110 projects |
-| `proyectos.html` `<meta name="description">` | 110 projects, $1,7 billones |
-| `js/i18n.js` `DIC` | the `"$1,76 billones"` key | Recompute with:
+| `proyectos.html` `.pj-stats` (`data-pj`) | 111 / 763.195 / $1,77 billones / 22 |
+| `index.html` `.credenciales` (`data-cifra`) | 111 projects, 22 departments |
+| `index.html` hero `.hf-tx` (`data-cifra`) | 111 projects |
+| `proyectos.html` `<meta name="description">` | 111 projects, $1,7 billones |
+| `js/i18n.js` `DIC` | the `"$1,77 billones"` key | Recompute with:
 
 ```powershell
 node -e "global.window={};require('./js/proyectos-data.js');var p=window.PROYECTOS;console.log(p.length, p.reduce((a,b)=>a+(b.ben||0),0), p.reduce((a,b)=>a+(b.val||0),0))"
 ```
 
-Every cut of this sheet has arrived with the same handful of defects, and the site cleans them in `proyectos-data.js` rather than reproducing them. For the 28-sep-2026 cut:
+Every cut of this sheet has arrived with the same handful of defects, and the site cleans them in `proyectos-data.js` rather than reproducing them. For the 7-oct-2026 cut:
 
-- Its TOTAL row (404.420 / 1.590.223.485.627) does **not** sum every row. The site publishes the honest full sum instead.
-- Row 91 is blank and the last row repeats the number 111, so the 111 data lines are renumbered 1–110 after one removal.
-- The Chaparral market-hall project is listed **twice**, identically, at rows 2 and 51 (`Aprobados`, 54.809 beneficiaries, $14.099.621.857). Only one is published.
-- Department and municipality are swapped in rows 8, 16, 42 and 45, and row 46 has no department at all. Rows 21, 22, 53 and 75 name a department in the project title that contradicts the department column (Boyacá, Boyacá, Magdalena, Norte de Santander); the title wins.
+- Its TOTAL row (404.420 / 1.590.235.295.547) does **not** sum every row. The site publishes the honest full sum instead.
+- Row 92 is blank and the last row repeats the number 112, so the 112 data lines are renumbered 1–111 after one removal.
+- Against the 28-sep cut this one changes only three things: the Piedecuesta wastewater plant moves to `Aprobados` and rises to $52.373.728.632, the Santiago de Tolú drug-prevention project rises to $2.511.310.750, and one record is new — the nationwide **entrepreneurship strategy for female heads of household** (1.000 beneficiaries, $2.500.000.000, `Aprobados`), which is what `mujeres.html` is built around. Row numbers shifted because the sheet groups the approved ones first.
+- The Chaparral market-hall project is listed **twice**, identically, at rows 2 and 52 (`Aprobados`, 54.809 beneficiaries, $14.099.621.857). Only one is published.
+- Department and municipality are swapped in four rows, and one row has no department at all. Four more name a department in the project title that contradicts the department column (Boyacá, Boyacá, Magdalena, Norte de Santander); the title wins.
 - Spelling in the source is inconsistent (`PLAN MESTRO`, `MPLEMENTACION`, `Eduactiva`, `HIDIRCA`, `Granadas`, `Sopetran`, `Puerto Escindido`, `OCRHOMA`). Names are published corrected.
 - Two pairs of rows share a name but differ in beneficiaries (the Beltrán tomato project, 622 and 1.291; the Acacías fish-farming project, 410 and 810). They are separate registrations and both stay.
 
@@ -155,6 +156,16 @@ The earlier five `.paso` cards were ours, not the Corporation's; they were repla
 `docs/formatos/` holds: the Corporation's own instructions (`Informacion-Proceso-Registro-Proyectos`), the blank submission form, the three SARLAFT documents, and `Ejemplo-Formulario-Diligenciado-Corpoteve.pdf`. That last one is **ours**: an HTML mock-up of the official form filled with a deliberately fictional project, printed to PDF with headless Chrome. It carries an "EJEMPLO" watermark and a disclaimer banner and must keep both — it exists to show the expected level of detail, never to pass as a real submission.
 
 Per the official instructions, a complete submission also needs the project's **technical document** and **budget**, beyond the published forms. Keep the step cards, the "Adjunta" list and the `.aviso` box in sync with that list.
+
+**Women in business page** (`mujeres.html`) — the Corporation's route for women entrepreneurs, built around the nationwide entrepreneurship strategy that entered the project table as approved. In order: a `#prioridad` band (a `.sec-dark` panel with three figures and the `.mj-nota` callout), `#apoyo` (four `.pilar` cards), `#como` (four `.paso` cards), `#inscribirse` (the registration form on a `.sec-foto` photo section) and `#faq`.
+
+`#prioridad` is **`sec sec-dark`, not `sec-panel-verde`**. That second class looks like it should be the dark green one and is in fact a *pale* green-to-blue gradient; white figures on it are invisible. If a band needs white text, it needs `.sec-dark`.
+
+The registration form is `#formMujeres`, the only form on the site that is not `#contactForm`. It has thirteen fields across three `fieldset`s plus six `input[name="apoyo"]` checkboxes and a required data-consent box. Its handler lives at the bottom of `js/app.js` and, like the others, posts nowhere: it assembles a plain-text body with the fields in labelled sections and opens a `mailto:` to corpoteverde@gmail.com. Field ids are read one by one, so **renaming an id in the HTML silently drops that field from the email** — keep the two in step.
+
+`presentar-proyecto.html` points at this route from a `.mj-ruta` band under its three phase cards.
+
+Its `<select>`s use the generic `.field select` rule added for this page, which mirrors `.field input` (same padding, border and radius) and has a dark-glass variant under `.sec-foto`. Before it existed, only selects carrying `.pj-select` were styled on dark sections and a bare `<select>` fell back to the native widget.
 
 **Alliance cards** (`alianzas.html`) — `.allies-grid` is a 3×2 grid (2 cols ≤900px, 1 col ≤540px) of six `.ally` anchors: `.ally-tag` → `.ally-logo` (fixed 92px framed box; pick a `lg-w`/`lg-m`/`lg-bid`/`lg-t`/`lg-s` size class) → `.ally-name` → `.ally-role` → `.ally-link`. Keep six cards (or a multiple of three) or the last row goes ragged.
 
@@ -186,7 +197,16 @@ Card families each have their own personality on purpose — `.pilar` (gradient 
 
 `img/asset-<hash>.{jpg,png}` are content-hashed originals — filenames are meaningless, so identify them by the `alt` text at their usage sites. Named files: `img/hero.jpg`, `img/minambiente.png`, `img/proyectos-360.png` (a partner's logo, not ours), `img/comunidad-taller-{1,2,3}.jpg` (2026 community workshop photos).
 
-From the 7-sep-2026 field material: `img/escuela-rural.jpg`, `img/asamblea-comunidad.jpg`, `img/olla-comunitaria.jpg`, `img/ninez-materiales.jpg`, `img/encuentro-comunidad.jpg`, `img/ninas-jornada.jpg` and `img/jornada-plaza.jpg` (the only portrait one, used as the `.imp.tall` tile). Phone originals are 4032 px wide and 1,5–2,8 MB; they are published at 1280 px / `-q:v 5` (~220–370 KB), except the portrait one at 910 px. The `.impact-grid` on `programas.html` now tiles **12** figures and the one on `index.html` **7** — both sets tile the 12-column grid exactly, so adding or removing one figure means re-checking the spans (`big` 6×2, `tall` 3×2, `wide` 6, `sq` 3) or the last row goes ragged.
+From the 7-sep-2026 field material: `img/escuela-rural.jpg`, `img/asamblea-comunidad.jpg`, `img/olla-comunitaria.jpg`, `img/ninez-materiales.jpg`, `img/encuentro-comunidad.jpg`, `img/ninas-jornada.jpg` and `img/jornada-plaza.jpg` (the only portrait one, used as the `.imp.tall` tile). Phone originals are 4032 px wide and 1,5–2,8 MB; they are published at 1280 px / `-q:v 5` (~220–370 KB), except the portrait one at 910 px. From the 4 and 5-oct-2026 batch: `img/cartilla-ninez.jpg`, `img/lectura-ninez.jpg`, `img/alfabetizacion-taller.jpg` and `img/maloca-noche.jpg` (all portrait, so they go in as `.imp.tall`), plus `img/cosecha-mojojoy.jpg` and `img/lavado-rio.jpg` (close-ups that survive the horizontal crop of `.imp.wide`).
+
+The `.impact-grid` on `programas.html` now tiles **18** figures and the one on `index.html` **7** — both sets tile the 12-column grid exactly, so adding or removing one figure means re-checking the spans (`big` 6×2, `tall` 3×2, `wide` 6, `sq` 3) or the last row goes ragged.
+
+**Photos of women.** `mujeres.html` draws on the four usable ones in the catalogue: `img/asset-db77e87d23.jpg` (two women in a carpentry workshop, the strongest "emprendimiento" image we have), `img/comunidad-taller-3.jpg`, `img/asset-918455482d.jpg` and `img/alfabetizacion-taller.jpg`, all portrait and all tiled as `.imp.tall` in its `#ellas` grid. `img/asset-1545147a2e.jpg` sits behind the `#prioridad` veil and `img/asset-51b1224baf.jpg` behind the registration form.
+
+Two other photos of women are **not** used there because they carry another organization's branding, the same problem as `media/alianza-360.mp4`:
+
+- `img/asset-e84c724c6a.jpg` shows a UNICEF vest and cooler box. It is still published on `programas.html` as the "Salud y Bienestar" programme card, where it reads as the Corporation's own work. Worth checking with the Corporation.
+- `img/asset-55a8e5073f.jpg` carries a "La Concordia" watermark. It is not used anywhere.
 
 **The logo** (September 2026 onwards) is the circular CPV emblem — dark green and gold, "CORPORACIÓN PROTECTORA VERDE · PROTECCIÓN AMBIENTAL · EST. 2001". It ships in two files:
 
@@ -208,7 +228,7 @@ Both logo files are covered by the cache-busting `?v=` hash, so a redesign of th
 
 `media/` holds the MP4s and their `poster-*.jpg` (each poster is a real frame pulled from its own clip with `ffmpeg -ss … -frames:v 1`, not a loose photo). The whole folder is ~47 MB.
 
-The three clips from the 7-sep-2026 batch are `recreacion-campo.mp4`, `integracion-comunidad.mp4` and `taller-ninez.mp4`; they open the showcase rail, so the `poster=` hardcoded on `.vshow-main video` must match the **first** `.vs-item` (`ui.js` selects it on load). The first two are landscape at 720 px, the third is vertical at 360×640 and exercises the `.vertical` branch of the frame.
+The showcase rail holds thirteen pieces. It opens with `amazonia-aerea.mp4` and `selva-amazonia.mp4` from the 5-oct-2026 batch, the only two that carry the Corporation's own burnt-in branding ("Unidos por la Amazonía"), followed by `taller-cartilla.mp4` and `vivienda-comunidad.mp4` from the same days and then the 7-sep batch (`recreacion-campo.mp4`, `integracion-comunidad.mp4`, `taller-ninez.mp4`). The `poster=` hardcoded on `.vshow-main video` must match the **first** `.vs-item` (`ui.js` selects it on load). The first two are landscape at 720 px, the third is vertical at 360×640 and exercises the `.vertical` branch of the frame.
 
 **Web encoding profile.** These clips come from phones and are already heavily compressed, so CRF alone does not control the output size — encoding `comunidad-2026.mp4` at CRF 30 actually produced 47 MB, and `alianza-360.mp4` at CRF 28 came out *larger* than the original. Use **two-pass VBR with an explicit bitrate** when a target size matters:
 
@@ -223,6 +243,6 @@ That took `comunidad-2026.mp4` from 69 MB to 15.9 MB (360x640, 24 fps, 391 kbps)
 
 `docs/formatos/` holds the downloadable official forms; `docs/` also keeps the source spreadsheet and PDF of the project list, plus `Brochure-Institucional-Corpoteve-2026.pdf`.
 
-**The brochure** is the Corporation's own 7-page institutional presentation (identity, purpose, ten strategic axes, programmes, portfolio, how to take part). It is linked from the `#brochure` band on `nosotros.html` (CSS section 55) and from the "Navegación" column of the footer on all six pages. Its cover is an **AI-generated illustration** and the PDF says so on the page — that is why the band draws a CSS "cover" instead of lifting the image out of the document.
+**The brochure** is the Corporation's own 7-page institutional presentation (identity, purpose, ten strategic axes, programmes, portfolio, how to take part). It is linked from the `#brochure` band on `nosotros.html` (CSS section 55) and from the "Navegación" column of the footer on all seven pages. Its cover is an **AI-generated illustration** and the PDF says so on the page — that is why the band draws a CSS "cover" instead of lifting the image out of the document.
 
 It arrived at 8,7 MB because its cover was embedded as a 2048×2048 *lossless* Flate bitmap (7,8 MB on its own). Recompressing that single stream as JPEG and rebuilding the xref took the file to **1,5 MB** with no other change; the untouched original is outside the site folder. Page 6 of the brochure quotes the portfolio figures as of 9-sep-2026 (113 / 773.975 / $1,84 billones / 23), one cut behind the table now published — worth telling the Corporation before they hand it out.

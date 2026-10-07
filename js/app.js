@@ -551,4 +551,56 @@
     abrirDesdeHash();
   })();
 
+
+  /* ===== Inscripción de emprendimientos de mujeres (mujeres.html) =====
+     Como el resto de formularios del sitio, no publica en ningún servidor:
+     arma un correo con los campos ordenados y lo abre en el cliente de la
+     visitante. Los nombres van en el cuerpo para que el equipo los lea tal
+     cual, sin tener que abrir un adjunto. */
+  (function(){
+    var f=document.getElementById('formMujeres'); if(!f) return;
+
+    function v(id){
+      var e=document.getElementById(id);
+      return e ? (e.value||'').trim() : '';
+    }
+    function linea(etiqueta,valor){
+      return valor ? etiqueta+': '+valor+'\n' : '';
+    }
+
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var apoyos=[];
+      f.querySelectorAll('input[name="apoyo"]:checked').forEach(function(c){
+        apoyos.push(c.value);
+      });
+
+      var cuerpo =
+        'INSCRIPCIÓN DE EMPRENDIMIENTO\n'+
+        '=============================\n\n'+
+        'DATOS DE CONTACTO\n'+
+        linea('Nombre', v('mjNombre'))+
+        linea('Correo', v('mjCorreo'))+
+        linea('Teléfono o WhatsApp', v('mjTel'))+
+        linea('Edad', v('mjEdad'))+
+        linea('Departamento', v('mjDep'))+
+        linea('Municipio o vereda', v('mjMun'))+
+        '\nEL EMPRENDIMIENTO\n'+
+        linea('Nombre', v('mjNegocio'))+
+        linea('Se dedica a', v('mjSector'))+
+        linea('Punto en el que está', v('mjEtapa'))+
+        linea('Personas que lo trabajan', v('mjPersonas'))+
+        linea('Tiempo de funcionamiento', v('mjTiempo'))+
+        '\nDescripción:\n'+v('mjDesc')+'\n'+
+        '\nAPOYO QUE NECESITA\n'+
+        (apoyos.length ? apoyos.join('\n') : 'No lo especificó')+'\n'+
+        '\nAutoriza el tratamiento de sus datos: sí\n';
+
+      var asunto='Inscripción de emprendimiento: '+(v('mjNegocio')||v('mjNombre'));
+      window.location.href='mailto:corpoteverde@gmail.com'+
+        '?subject='+encodeURIComponent(asunto)+
+        '&body='+encodeURIComponent(cuerpo);
+    });
+  })();
+
 })();
