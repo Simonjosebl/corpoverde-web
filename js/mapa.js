@@ -73,8 +73,11 @@
   /* ==========================================================================
      2. Escala de color secuencial (verde de la marca, de tenue a intenso)
      ====================================================================== */
-  var RAMPA = ['#12362A','#174E33','#22703C','#3F9A3C','#7CC63C','#A8E05A'];
-  var SIN_DATOS = 'rgba(255,255,255,.055)';
+  var RAMPA = ['#1C6B45','#23844F','#2FA055','#4FBC54','#86D94A','#BEEE5E'];
+  var SIN_DATOS = 'rgba(255,255,255,.07)';
+  /* Suelo de la escala: un departamento con un solo proyecto tiene que
+     distinguirse del fondo, así que nunca arranca en el extremo apagado. */
+  var PISO = 0.22;
 
   function hexRGB(h){
     return [parseInt(h.substr(1,2),16), parseInt(h.substr(3,2),16), parseInt(h.substr(5,2),16)];
@@ -83,7 +86,7 @@
 
   function color(t){                       /* t ∈ [0,1] */
     if(t <= 0) return SIN_DATOS;
-    var x = Math.min(1, t) * (RGB.length - 1);
+    var x = (PISO + Math.min(1, t) * (1 - PISO)) * (RGB.length - 1);
     var i = Math.floor(x), f = x - i;
     var a = RGB[i], b = RGB[Math.min(RGB.length-1, i+1)];
     return 'rgb(' + Math.round(a[0]+(b[0]-a[0])*f) + ',' +
@@ -154,7 +157,12 @@
   var barra  = host.querySelector('.ml-barra');
 
   if(barra){
-    barra.style.background = 'linear-gradient(90deg,' + RAMPA.join(',') + ')';
+    /* La leyenda se muestrea de la misma función que pinta el mapa, piso
+       incluido: si no, su extremo izquierdo prometería un verde que ningún
+       departamento llega a tener. */
+    var tramos = [];
+    for(var q=0;q<=10;q++) tramos.push(color(q/10));
+    barra.style.background = 'linear-gradient(90deg,' + tramos.join(',') + ')';
   }
 
   /* Índice de los <path> por nombre de departamento */

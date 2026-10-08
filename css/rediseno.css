@@ -455,7 +455,7 @@ body.cargando{overflow:hidden}
 /* Departamentos */
 .mi-dep{
   fill:rgba(255,255,255,.055);
-  stroke:rgba(255,255,255,.34);stroke-width:.7;stroke-linejoin:round;
+  stroke:rgba(255,255,255,.45);stroke-width:.9;stroke-linejoin:round;
   cursor:pointer;outline:none;
   transition:fill .55s var(--ease),stroke .25s,stroke-width .25s,filter .3s;
 }
@@ -474,10 +474,10 @@ body.cargando{overflow:hidden}
 .mi-eti{
   pointer-events:none;text-anchor:middle;
   font-family:var(--body);font-weight:700;
-  paint-order:stroke;stroke:rgba(6,24,15,.75);stroke-width:3.4;stroke-linejoin:round;
+  paint-order:stroke;stroke:rgba(4,18,11,.92);stroke-width:4.6;stroke-linejoin:round;
 }
 .mi-eti-n{fill:#fff;font-size:15px;letter-spacing:.01em}
-.mi-eti-v{fill:var(--lima-2);font-size:13px;font-weight:800}
+.mi-eti-v{fill:#DFFFA8;font-size:13px;font-weight:800}
 .mi-vivo .mi-eti{animation:miFade .6s .5s var(--ease) both}
 @keyframes miFade{from{opacity:0}to{opacity:1}}
 
@@ -2878,4 +2878,99 @@ body > section.sec:last-of-type{padding-bottom:clamp(2.4rem,4.4vw,3.6rem)}
 #ellas .impact-grid .imp.tall{min-height:clamp(330px,34vw,460px)}
 @media (max-width:860px){
   #ellas .impact-grid .imp.tall{min-height:260px}
+}
+
+
+/* ============================================================================
+   58. ALIADOS Y EJECUTORAS EN UNA SOLA REJILLA
+   Las dos listas estaban separadas y repetían a Ingeambiental y a 360 Group.
+   Ahora es una sola rejilla de diez: cada entidad aparece una vez y la
+   etiqueta dice si además ejecuta. De las diez, ocho tienen logo publicado;
+   las otras llevan un monograma en el mismo recuadro en vez de una marca
+   inventada o prestada.
+   ========================================================================== */
+.ally-mono{
+  display:grid;place-items:center;width:62px;height:62px;border-radius:18px;
+  font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:.02em;color:#fff;
+  background:linear-gradient(140deg,var(--bosque),var(--bosque-3));
+  box-shadow:0 12px 26px -16px rgba(11,46,31,.95);
+}
+
+/* plazo y valor del proyecto bajo el papel de la entidad */
+
+/* La etiqueta cambia de color cuando la entidad ejecuta un proyecto */
+.ally-tag.es-ejec{
+  color:#4B7A16;background:rgba(138,195,45,.12);border-color:rgba(138,195,45,.26);
+}
+
+/* Con diez tarjetas la última fila queda con una sola: se centra en vez de
+   dejarla pegada a la izquierda. */
+.allies-grid > .ally:nth-last-child(1):nth-child(3n+1){grid-column:2}
+@media(max-width:900px){
+  .allies-grid > .ally:nth-last-child(1):nth-child(3n+1){grid-column:auto}
+  .allies-grid > .ally:nth-last-child(1):nth-child(2n+1){grid-column:1 / -1;max-width:calc(50% - .75rem);justify-self:center}
+}
+@media(max-width:540px){
+  .allies-grid > .ally:nth-last-child(1):nth-child(2n+1){max-width:none}
+}
+
+
+/* ============================================================================
+   59. RELIEVE DE LA REJILLA DE ALIADOS
+   Las tarjetas eran blancas sobre un lienzo casi blanco: no se recortaban
+   contra nada. La sección va ahora sobre el panel verde claro y la tarjeta
+   gana el filo de color permanente, un recuadro de logo con anillo y un
+   barrido al pasar el cursor. El marco del logo se mantiene claro a propósito:
+   casi todas las marcas son de tinta oscura.
+   ========================================================================== */
+.allies-grid .ally{
+  background:linear-gradient(176deg,#fff 0%,#FBFDF8 58%,#F3F8EE 100%);
+  border-color:rgba(11,46,31,.1);
+  box-shadow:0 1px 2px rgba(11,46,31,.05),0 14px 32px -24px rgba(11,46,31,.5);
+}
+/* el filo de color deja de ser solo de hover: ancla la tarjeta */
+.allies-grid .ally::before{
+  height:4px;transform:scaleX(1);transform-origin:center;opacity:.5;
+  background:linear-gradient(90deg,var(--lima),var(--azul));
+  transition:opacity .45s var(--ease),height .45s var(--ease);
+}
+.allies-grid .ally:hover::before{opacity:1;height:5px;transform:scaleX(1)}
+.allies-grid .ally:hover{
+  border-color:rgba(138,195,45,.55);
+  box-shadow:0 2px 4px rgba(11,46,31,.06),0 26px 50px -28px rgba(11,46,31,.65);
+}
+
+/* barrido suave, el mismo recurso de .brillo */
+.allies-grid .ally::after{
+  content:'';position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.65) 50%,transparent 62%);
+  transform:translateX(-120%);transition:transform .9s var(--ease);
+}
+.allies-grid .ally:hover::after{transform:translateX(120%)}
+
+/* recuadro del logo: anillo interior y un punto de color detrás */
+.allies-grid .ally-logo{
+  position:relative;overflow:hidden;
+  background:linear-gradient(180deg,#fff,#F7FAF3);
+  border-color:rgba(11,46,31,.09);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.9),0 2px 10px -6px rgba(11,46,31,.3);
+}
+.allies-grid .ally-logo::before{
+  content:'';position:absolute;inset:auto -30% -70% -30%;height:120%;
+  background:radial-gradient(60% 70% at 50% 100%,rgba(138,195,45,.16),transparent 70%);
+  transition:opacity .5s var(--ease);opacity:0;
+}
+.allies-grid .ally:hover .ally-logo::before{opacity:1}
+.allies-grid .ally-logo img{position:relative;z-index:1}
+
+.allies-grid .ally-name{font-size:1.02rem;letter-spacing:-.01em}
+.allies-grid .ally-role{color:var(--niebla)}
+.allies-grid .ally-link{color:var(--azul);font-weight:700}
+.allies-grid .ally:hover .ally-link{color:var(--bosque)}
+
+/* la etiqueta se asienta mejor con algo de peso */
+.allies-grid .ally-tag{box-shadow:0 1px 2px rgba(11,46,31,.04)}
+
+@media (prefers-reduced-motion: reduce){
+  .allies-grid .ally::after{display:none}
 }

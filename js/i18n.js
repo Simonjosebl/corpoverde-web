@@ -250,7 +250,6 @@
   "Aliados que":"Partners who",
   "confían":"trust us",
   "Sumamos capacidades con organizaciones e instituciones comprometidas con el desarrollo humano y sostenible.":"We combine capabilities with organizations and institutions committed to human and sustainable development.",
-  "Sumamos capacidades con organizaciones e instituciones que comparten nuestro compromiso con el desarrollo humano y sostenible.":"We combine capabilities with organizations and institutions that share our commitment to human and sustainable development.",
   "Conoce todas nuestras alianzas":"See all our partnerships",
   "Conocer las alianzas":"See the partnerships",
   "Ver el mapa de zonas de incidencia":"See the map of our areas of impact",
@@ -996,7 +995,23 @@
   "Mujeres y niñas de una comunidad indígena reunidas en un espacio comunitario":"Women and girls from an Indigenous community gathered in a communal space",
   "Una madre y sus hijos trabajando juntos en un cuadernillo de lectoescritura":"A mother and her children working together on a reading workbook",
   "Cada proyecto que aprobamos termina aquí, en una comunidad con nombre propio":"Every project we approve ends up here, in a community with a name of its own",
-  "Niñas y niños frente a la escuela de una comunidad rural":"Children in front of a rural community school"
+  "Niñas y niños frente a la escuela de una comunidad rural":"Children in front of a rural community school",
+
+  /* --- empresas ejecutoras --- */
+  "Prevención del consumo de sustancias psicoactivas y optimización de la planta de tratamiento El Santuario, en Piedecuesta":"Drug-use prevention and the upgrade of the El Santuario treatment plant, in Piedecuesta",
+  "Establecimiento forestal de 150 hectáreas de balso en predios del consejo comunitario de Cupica, Bahía Solano":"Planting 150 hectares of balsa on the Cupica community council's land, Bahía Solano",
+  "Tecnologías digitales para el acceso a las TIC en instituciones educativas públicas de San Carlos, Antioquia":"Digital technology for ICT access in state schools of San Carlos, Antioquia",
+  "Prevención y protección frente al consumo de sustancias psicoactivas en Santiago de Tolú, Sucre":"Drug-use prevention and protection in Santiago de Tolú, Sucre",
+  "Ver su proyecto":"See their project",
+  "Consulta el portafolio completo":"See the full portfolio",
+  "Fundación":"Foundation",
+  "Con quiénes trabajamos":"Who we work with",
+  "Sumamos capacidades con organizaciones e instituciones que comparten nuestro compromiso con el desarrollo humano y sostenible, y con las entidades que llevan a cabo los proyectos aprobados.":"We join forces with organisations and institutions that share our commitment to human and sustainable development, and with the entities that carry out the approved projects.",
+  "Aliada y ejecutora":"Ally and delivery partner",
+  "Ejecutora":"Delivery partner",
+  "Ingeniería y gestión ambiental. Ejecuta las diez plataformas electroquímicas para potabilizar agua en La Guajira":"Environmental engineering and management. Delivers the ten electrochemical water treatment platforms in La Guajira",
+  "Economía circular, residuos y energía renovable. Ejecuta la salud preventiva en el Atlántico y la fase II de la plaza de mercado de Chaparral":"Circular economy, waste and renewable energy. Delivers preventive health in Atlántico and phase II of the Chaparral market hall",
+  "Las entidades a las que todavía no se les ha asignado plazo no aparecen aquí. ¿Tu organización quiere sumar?":"Entities without an assigned timeframe are not listed here. Would your organisation like to join?"
   };
 
   /* ==========================================================================

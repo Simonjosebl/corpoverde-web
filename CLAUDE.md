@@ -66,6 +66,15 @@ Everything respects `prefers-reduced-motion`.
 
 `mapa.js` mounts into `#mapaIncidencia` (currently `programas.html#incidencia`) and needs **both** `window.PROYECTOS` and `window.COLOMBIA_DEPTOS`, in that script order. It paints each department with an intensity proportional to the active metric (projects / beneficiaries / investment), using a sequential green ramp (`RAMPA`) and a square-root scale so one dominant department does not flatten the rest. Departments with no projects stay grey. It also renders the top-five labels — separated vertically with leader lines so the Caribbean cluster stays readable — plus the ranking list, the legend and the tooltip. `Cobertura nacional` records are excluded from the department count and reported separately.
 
+**Rule: the map is never updated by hand, and it is never left behind.** Every figure it paints — the fill of each department, the top-five labels, the ranking, the legend and the "presencia en N departamentos" line — is derived from `window.PROYECTOS` at load time. There is no second copy of the numbers anywhere, so **any change to `js/proyectos-data.js` updates the map by itself**. Never hardcode a count, a department or a colour into `mapa.js` to "fix" a discrepancy: if the map disagrees with the table, the data file is the thing to look at.
+
+After every cut of the projects sheet, check these two things and nothing else:
+
+1. The map logs no `console.warn` (see below). A warning means a department name in the data does not match a geometry.
+2. The highest department's count still spreads the ramp sensibly. The scale is a square root of `value / max` lifted by a floor (`PISO = 0.22` in `mapa.js`), so a department with a single project lands at roughly `rgb(45,156,84)` against a panel at `rgb(11,46,31)` and stays visible. Before that floor existed, one project rendered at `rgb(23,78,51)` and half the country looked empty on a phone. If a future cut has one department dwarfing the rest by an order of magnitude, raise the floor rather than flattening the ramp.
+
+The legend bar samples the same `color()` function the map uses, floor included, so it cannot promise a shade no department actually has.
+
 If the projects table gains a department whose name does not match any `COLOMBIA_DEPTOS.n`, the map logs a `console.warn` naming it — that is almost always a typo in `proyectos-data.js`, not a missing geometry.
 
 ### `js/i18n.js` — Spanish → English at runtime
@@ -167,7 +176,27 @@ The registration form is `#formMujeres`, the only form on the site that is not `
 
 Its `<select>`s use the generic `.field select` rule added for this page, which mirrors `.field input` (same padding, border and radius) and has a dark-glass variant under `.sec-foto`. Before it existed, only selects carrying `.pj-select` were styled on dark sections and a bare `<select>` fell back to the native widget.
 
-**Alliance cards** (`alianzas.html`) — `.allies-grid` is a 3×2 grid (2 cols ≤900px, 1 col ≤540px) of six `.ally` anchors: `.ally-tag` → `.ally-logo` (fixed 92px framed box; pick a `lg-w`/`lg-m`/`lg-bid`/`lg-t`/`lg-s` size class) → `.ally-name` → `.ally-role` → `.ally-link`. Keep six cards (or a multiple of three) or the last row goes ragged.
+**Alliance cards** (`alianzas.html#alianzas`) — `.allies-grid` is a 3-column grid (2 cols ≤900px, 1 col ≤540px) of `.ally` anchors: `.ally-tag` → `.ally-logo` (fixed 92px framed box; pick a `lg-w`/`lg-m`/`lg-bid`/`lg-t`/`lg-s` size class) → `.ally-name` → `.ally-role` → `.ally-link`.
+
+It holds **ten** entities in one list: the cooperation and institutional allies, and the organisations that actually deliver the approved projects (from the "Relación proyectos por empresas ejecutoras" sheet). They were two separate sections once, which meant Ingeambiental and 360 Group appeared twice on the same page; now each entity appears once and `.ally-tag` says which it is, with `.es-ejec` turning the tag green for anyone who delivers.
+
+Ten is not a multiple of three, so the orphan in the last row is centred by `:nth-last-child(1):nth-child(3n+1){grid-column:2}` rather than left hanging. Keep that rule in mind when the count changes.
+
+All ten now carry a logo. Eight came from their owners: `img/pies-descalzos.png` (rasterised at 392px from the foundation's own SVG), `img/casa-didactico.png` (from the company's site), `img/gea.png` (supplied by the Corporation, cropped to its bounding box with the white matte turned transparent) and the five already in the repo.
+
+**`img/funcredes.png` is ours, not theirs.** No site, logo or registry record for Fundación Funcredes could be found, so the Corporation asked for a mark to be drawn. It is a wordmark in the site's own display face with a three-figure seal and a wave for the gulf of Morrosquillo, built from `scratchpad/funcredes.html` and rasterised. Treat it as a placeholder: **swap it the moment the foundation sends its real mark**, and do not present it anywhere as the foundation's registered identity.
+
+The supplied GEA file reads **"GEA Colombia S.A.S."** while the delivery sheet names the contractor **"Grupo Empresarial GEA S.A.S."**. The card keeps the sheet's legal name because that is the authoritative source for the contract, but the two should be reconciled.
+
+`.ally-mono` is kept in the stylesheet even though nothing uses it now: it is the fallback for a future ally whose logo we cannot obtain, and it is a better answer than a borrowed or invented mark.
+
+The section sits on `sec-panel sec-panel-verde` on purpose. White cards on the page's own near-white canvas had nothing to stand against; the tinted panel is what gives them an edge. CSS section 59 adds the rest of the relief: a permanent gradient rule along the top of each card (it used to appear only on hover), a deeper shadow, an inner ring and a hover glow on the logo frame, and a light sweep across the card. The logo frame stays light whatever the section does, because most of these marks are dark ink.
+
+The footer logo marquee mirrors this list and is duplicated twice per track for the loop, so adding a logo there means two insertions per marquee, on all seven pages.
+
+**Two rows of the delivery sheet are deliberately not published**: Fundación Escala (ecological restoration in Córdoba, $30.000.000.000) and Fundación Claudia T. (the women's entrepreneurship strategy, $2.500.000.000). Both are marked PENDIENTE with 0 months, so there is no contract to announce.
+
+**No NIT and no amounts are published.** The sheet gives Fundación Pies Descalzos two different NITs (802016680-8 and 900952420-1), and the second is 360 Group's own number in another row; 360 Group itself appears with two more. Until the Corporation confirms which is which, a tax ID on a public page is a liability rather than transparency. Timeframes and values were on the cards briefly and were removed: the portfolio page is where figures belong.
 
 **Pillars band** (`index.html#enfoque`) — `.pilares-panel` holds a 4-up `.pilar` grid. `.pilar` carries `position:relative;z-index:1` on purpose: `.pilar-ic::before` is the conic-gradient ring at `z-index:-1`, and without that stacking context it would paint behind the panel background and vanish.
 
