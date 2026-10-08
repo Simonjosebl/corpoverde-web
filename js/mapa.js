@@ -239,34 +239,97 @@
       el.style.fill = color(Math.sqrt(d[metrica] / max));
     });
 
-    /* 5.2 Etiquetas de los cinco departamentos con más peso.
-           Los centroides del Caribe quedan muy juntos, así que se separan
-           verticalmente y se dibuja una línea guía hasta el departamento. */
-    var etis = orden.slice(0,5).map(function(d){
+    /* 5.2 Etiquetas de todos los departamentos con proyectos.
+           Veintidós rótulos no caben colocándolos sin más en el centroide, así
+           que se pintan primero, se miden de verdad con getBBox y después se
+           busca sitio: el de más peso se queda donde está y los demás prueban
+           posiciones en espiral hasta encontrar hueco. Si uno acaba lejos de su
+           departamento, se le tiende una línea guía. */
+    /* El SVG mide W unidades de ancho pero se dibuja al ancho que le deje la
+       caja. Si el factor deja el texto por debajo de unos 9 px reales no se
+       lee, así que en pantallas estrechas se rotulan menos departamentos y con
+       cuerpo mayor; la lista del ranking sigue nombrándolos todos. */
+    var etis0 = conDatos;
+    var anchoReal = svg.getBoundingClientRect().width || W;
+    var escala = anchoReal / W;
+    var cuantos, clase;
+    if(escala >= 0.70){ cuantos = etis0.length; clase = ''; }
+    else if(escala >= 0.56){ cuantos = 12; clase = 'mi-eti-md'; }
+    else { cuantos = 6; clase = 'mi-eti-sm'; }
+    host.classList.remove('mi-eti-md','mi-eti-sm');
+    if(clase) host.classList.add(clase);
+
+    var etis = orden.slice(0, cuantos).map(function(d){
       var c = centros[d.dep];
       if(!c) return null;
-      return {dep:d.dep, v:d[metrica], x:c[0], y:c[1], ax:c[0], ay:c[1]};
-    }).filter(Boolean).sort(function(a,b){ return a.y - b.y; });
+      return {dep:d.dep, v:d[metrica], ax:c[0], ay:c[1], x:c[0], y:c[1]};
+    }).filter(Boolean);
 
-    var ALTO = 46;
-    for(var i=1;i<etis.length;i++){
-      var prev = etis[i-1], cur = etis[i];
-      if(Math.abs(cur.x - prev.x) < 155 && cur.y - prev.y < ALTO){
-        cur.y = prev.y + ALTO;
-      }
+    gEtiq.innerHTML = etis.map(function(e, i){
+      return '<g class="mi-eti-g" data-i="' + i + '">' +
+        '<text class="mi-eti" x="' + e.x + '" y="' + e.y + '">' +
+        '<tspan class="mi-eti-n">' + esc(e.dep) + '</tspan>' +
+        '<tspan class="mi-eti-v" x="' + e.x + '" dy="13.5">' +
+        METRICAS[metrica].fmt(e.v) + '</tspan></text></g>';
+    }).join('');
+
+    var grupos = gEtiq.querySelectorAll('.mi-eti-g');
+    var MX = 3, MY = 2;                    /* aire alrededor de cada caja */
+    etis.forEach(function(e, i){
+      var caja = grupos[i].querySelector('text').getBBox();
+      e.w = caja.width + MX * 2;
+      e.h = caja.height + MY * 2;
+      e.dx = caja.x - e.x;                 /* el texto está centrado en x */
+      e.dy = caja.y - e.y;
+    });
+
+    function choca(a, b){
+      return Math.abs(a.cx - b.cx) * 2 < (a.w + b.w) &&
+             Math.abs(a.cy - b.cy) * 2 < (a.h + b.h);
     }
-    etis.forEach(function(e){ e.y = Math.max(22, Math.min(H - 26, e.y)); });
+    function centro(e, x, y){
+      return {cx:x + e.dx + e.w/2 - MX, cy:y + e.dy + e.h/2 - MY, w:e.w, h:e.h};
+    }
+
+    /* anillos de búsqueda: primero el sitio natural, luego arriba, abajo y a
+       los lados, abriéndose poco a poco */
+    var PASOS = [[0,0]];
+    for(var r=1; r<=9; r++){
+      var d2 = r * 15;
+      PASOS.push([0,-d2],[0,d2],[-d2*1.2,0],[d2*1.2,0],
+                 [-d2,-d2*0.8],[d2,-d2*0.8],[-d2,d2*0.8],[d2,d2*0.8]);
+    }
+
+    var puestas = [];
+    etis.forEach(function(e){
+      var mejor = null;
+      for(var k=0;k<PASOS.length;k++){
+        var x = e.ax + PASOS[k][0], y = e.ay + PASOS[k][1];
+        var c = centro(e, x, y);
+        if(c.cx - c.w/2 < 2 || c.cx + c.w/2 > W - 2 ||
+           c.cy - c.h/2 < 2 || c.cy + c.h/2 > H - 2) continue;
+        var libre = true;
+        for(var j=0;j<puestas.length;j++){ if(choca(c, puestas[j])){ libre = false; break; } }
+        if(libre){ mejor = {x:x, y:y, c:c}; break; }
+      }
+      if(!mejor){                          /* sin hueco: se deja en su sitio */
+        mejor = {x:e.ax, y:e.ay, c:centro(e, e.ax, e.ay)};
+      }
+      e.x = mejor.x; e.y = mejor.y;
+      puestas.push(mejor.c);
+    });
 
     gEtiq.innerHTML = etis.map(function(e){
-      var guia = (Math.abs(e.y - e.ay) > 6)
+      var lejos = Math.abs(e.x - e.ax) > 6 || Math.abs(e.y - e.ay) > 6;
+      var guia = lejos
         ? '<line class="mi-guia" x1="' + e.ax + '" y1="' + e.ay +
-          '" x2="' + e.x + '" y2="' + (e.y - 5) + '"/>' +
-          '<circle class="mi-guia-p" cx="' + e.ax + '" cy="' + e.ay + '" r="2.6"/>'
+          '" x2="' + e.x + '" y2="' + (e.y - 4) + '"/>' +
+          '<circle class="mi-guia-p" cx="' + e.ax + '" cy="' + e.ay + '" r="2.4"/>'
         : '';
       return guia +
         '<text class="mi-eti" x="' + e.x + '" y="' + e.y + '">' +
         '<tspan class="mi-eti-n">' + esc(e.dep) + '</tspan>' +
-        '<tspan class="mi-eti-v" x="' + e.x + '" dy="14">' +
+        '<tspan class="mi-eti-v" x="' + e.x + '" dy="13.5">' +
         METRICAS[metrica].fmt(e.v) + '</tspan></text>';
     }).join('');
 
@@ -329,4 +392,11 @@
   /* Si cambia el idioma, el ranking y las etiquetas se vuelven a pintar para
      que los sectores queden traducidos. */
   document.addEventListener('cpv:idioma', function(){ pintar(); });
+
+  /* Al girar el teléfono o redimensionar cambia cuántos rótulos caben */
+  var reloj = null;
+  window.addEventListener('resize', function(){
+    clearTimeout(reloj);
+    reloj = setTimeout(pintar, 180);
+  });
 })();

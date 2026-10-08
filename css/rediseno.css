@@ -474,10 +474,10 @@ body.cargando{overflow:hidden}
 .mi-eti{
   pointer-events:none;text-anchor:middle;
   font-family:var(--body);font-weight:700;
-  paint-order:stroke;stroke:rgba(4,18,11,.92);stroke-width:4.6;stroke-linejoin:round;
+  paint-order:stroke;stroke:rgba(4,18,11,.9);stroke-width:4;stroke-linejoin:round;
 }
-.mi-eti-n{fill:#fff;font-size:15px;letter-spacing:.01em}
-.mi-eti-v{fill:#DFFFA8;font-size:13px;font-weight:800}
+.mi-eti-n{fill:#fff;font-size:14.5px;letter-spacing:.005em}
+.mi-eti-v{fill:#DFFFA8;font-size:12.5px;font-weight:800}
 .mi-vivo .mi-eti{animation:miFade .6s .5s var(--ease) both}
 @keyframes miFade{from{opacity:0}to{opacity:1}}
 
@@ -2974,3 +2974,12 @@ body > section.sec:last-of-type{padding-bottom:clamp(2.4rem,4.4vw,3.6rem)}
 @media (prefers-reduced-motion: reduce){
   .allies-grid .ally::after{display:none}
 }
+
+/* Rótulos del mapa: el cuerpo compensa el encogimiento del SVG en pantallas
+   estrechas, donde además se rotulan menos departamentos. */
+.mi-eti-md .mi-eti-n{font-size:18px}
+.mi-eti-md .mi-eti-v{font-size:15.5px}
+.mi-eti-md .mi-eti{stroke-width:4.6}
+.mi-eti-sm .mi-eti-n{font-size:24px}
+.mi-eti-sm .mi-eti-v{font-size:20px}
+.mi-eti-sm .mi-eti{stroke-width:6}
