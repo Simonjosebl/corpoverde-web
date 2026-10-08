@@ -1011,7 +1011,9 @@
   "Ejecutora":"Delivery partner",
   "Ingeniería y gestión ambiental. Ejecuta las diez plataformas electroquímicas para potabilizar agua en La Guajira":"Environmental engineering and management. Delivers the ten electrochemical water treatment platforms in La Guajira",
   "Economía circular, residuos y energía renovable. Ejecuta la salud preventiva en el Atlántico y la fase II de la plaza de mercado de Chaparral":"Circular economy, waste and renewable energy. Delivers preventive health in Atlántico and phase II of the Chaparral market hall",
-  "Las entidades a las que todavía no se les ha asignado plazo no aparecen aquí. ¿Tu organización quiere sumar?":"Entities without an assigned timeframe are not listed here. Would your organisation like to join?"
+  "Las entidades a las que todavía no se les ha asignado plazo no aparecen aquí. ¿Tu organización quiere sumar?":"Entities without an assigned timeframe are not listed here. Would your organisation like to join?",
+  "Juntos construimos tejido social":"Together we build the social fabric",
+  "La comunidad entera levantando la estructura de un espacio común, en minga.":"The whole community raising the frame of a shared space, working side by side."
   };
 
   /* ==========================================================================
