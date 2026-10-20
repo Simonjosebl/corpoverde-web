@@ -1038,7 +1038,9 @@
   "Recreo en la escuela":"Break time at school",
   "Niñas y niños corriendo por el patio, con la escuela de la comunidad al fondo.":"Children running across the yard, with the community school behind them.",
   "Las caras de la jornada":"The faces of the day",
-  "Un momento con las niñas y los niños que participan en los talleres.":"A moment with the children who take part in the workshops."
+  "Un momento con las niñas y los niños que participan en los talleres.":"A moment with the children who take part in the workshops.",
+  "Ayuda humanitaria para Colombia":"Humanitarian aid for Colombia",
+  "Acopio y envío de ayuda desde Estados Unidos, en campaña conjunta con Corazones Unidos Colombia.":"Collecting and shipping aid from the United States, in a joint campaign with Corazones Unidos Colombia."
   };
 
   /* ==========================================================================
