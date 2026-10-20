@@ -204,7 +204,13 @@ The footer logo marquee mirrors this list and is duplicated twice per track for 
 
 **Pillars band** (`index.html#enfoque`) — `.pilares-panel` holds a 4-up `.pilar` grid. `.pilar` carries `position:relative;z-index:1` on purpose: `.pilar-ic::before` is the conic-gradient ring at `z-index:-1`, and without that stacking context it would paint behind the panel background and vanish.
 
-**Contact forms** — `#contactForm` never posts anywhere; it builds a `mailto:` URL to `corpoteverde@gmail.com` and sets `window.location.href`. `nosotros.html` (PQR) and `presentar-proyecto.html` reuse the same `#contactForm`/`#nombre`/`#email`/`#asunto`/`#mensaje` IDs, with `#asunto` as a `<select>`. Keep those IDs if you add another form.
+**The contact address is `contacto@corporacionprotectoraverde.ong`** (changed from `corpoteverde@gmail.com` on 20-oct-2026). It appears 59 times across the seven pages, `js/app.js` and the `DIC` in `js/i18n.js`, as plain text, as `mailto:` hrefs and inside translated strings. There is no URL-encoded variant, so a plain string replace covers all of it — but **check the count afterwards**, and remember the English side of `DIC` carries it too.
+
+It is 39 characters with no natural break point, and that alone pushed `.dp-card` and the phase cards off-screen at 320 and 360 px. CSS section 60 gives `overflow-wrap:anywhere` to the handful of containers that can hold it. If a new component shows the address, add it to that list.
+
+**The downloadable PDFs in `docs/` still print the old gmail address** on their letterheads and in the nine-step diagram. Those are the Corporation's own documents and were not rewritten; they have to reissue them.
+
+**Contact forms** — `#contactForm` never posts anywhere; it builds a `mailto:` URL to `contacto@corporacionprotectoraverde.ong` and sets `window.location.href`. `nosotros.html` (PQR) and `presentar-proyecto.html` reuse the same `#contactForm`/`#nombre`/`#email`/`#asunto`/`#mensaje` IDs, with `#asunto` as a `<select>`. Keep those IDs if you add another form.
 
 **Back-to-top button** — `#toTop` is a small ring, not a boxed button: an SVG track plus a `.tt-avance` circle with `pathLength="100"` whose `stroke-dashoffset` `ui.js` drives from the scroll position, and a `.tt-flecha` arrow. It shares its scroll handler with the top `#progreso` bar. The arrow inherits `currentColor`; the original `styles.css` rule forced `stroke:#fff`, which made it invisible on the light button — do not reintroduce a fixed stroke colour.
 
@@ -232,7 +238,9 @@ Card families each have their own personality on purpose — `.pilar` (gradient 
 
 From the 7-sep-2026 field material: `img/escuela-rural.jpg`, `img/asamblea-comunidad.jpg`, `img/olla-comunitaria.jpg`, `img/ninez-materiales.jpg`, `img/encuentro-comunidad.jpg`, `img/ninas-jornada.jpg` and `img/jornada-plaza.jpg` (the only portrait one, used as the `.imp.tall` tile). Phone originals are 4032 px wide and 1,5–2,8 MB; they are published at 1280 px / `-q:v 5` (~220–370 KB), except the portrait one at 910 px. From the 4 and 5-oct-2026 batch: `img/cartilla-ninez.jpg`, `img/lectura-ninez.jpg`, `img/alfabetizacion-taller.jpg` and `img/maloca-noche.jpg` (all portrait, so they go in as `.imp.tall`), plus `img/cosecha-mojojoy.jpg` and `img/lavado-rio.jpg` (close-ups that survive the horizontal crop of `.imp.wide`).
 
-The `.impact-grid` on `programas.html` now tiles **18** figures and the one on `index.html` **7** — both sets tile the 12-column grid exactly, so adding or removing one figure means re-checking the spans (`big` 6×2, `tall` 3×2, `wide` 6, `sq` 3) or the last row goes ragged.
+From the 19-oct-2026 batch: `img/palabras-ninez.jpg` (portrait, `.imp.tall`), `img/ronda-comunidad.jpg`, `img/fila-ninez.jpg`, `img/escuela-zapatos.jpg`, `img/rio-equipo.jpg`, `img/grada-escuela.jpg` and `img/estudio-aula.jpg`.
+
+The `.impact-grid` on `programas.html` now tiles **23** figures and the one on `index.html` **9** — both sets tile the 12-column grid exactly, so adding or removing one figure means re-checking the spans (`big` 6×2, `tall` 3×2, `wide` 6, `sq` 3) or the last row goes ragged.
 
 **Photos of women.** `mujeres.html` draws on the four usable ones in the catalogue: `img/asset-db77e87d23.jpg` (two women in a carpentry workshop, the strongest "emprendimiento" image we have), `img/comunidad-taller-3.jpg`, `img/asset-918455482d.jpg` and `img/alfabetizacion-taller.jpg`, all portrait and all tiled as `.imp.tall` in its `#ellas` grid. `img/asset-1545147a2e.jpg` sits behind the `#prioridad` veil and `img/asset-51b1224baf.jpg` behind the registration form.
 
@@ -261,7 +269,7 @@ Both logo files are covered by the cache-busting `?v=` hash, so a redesign of th
 
 `media/` holds the MP4s and their `poster-*.jpg` (each poster is a real frame pulled from its own clip with `ffmpeg -ss … -frames:v 1`, not a loose photo). The whole folder is ~47 MB.
 
-The showcase rail holds fourteen pieces. It opens with `tejido-social.mp4` (7-oct-2026, the community raising a roof frame together), then `amazonia-aerea.mp4` and `selva-amazonia.mp4` from the 5-oct batch. Those three carry the Corporation's own burnt-in branding ("Unidos por la Amazonía", "Juntos construimos tejido social"), which is why they lead, followed by `taller-cartilla.mp4` and `vivienda-comunidad.mp4` from the same days and then the 7-sep batch (`recreacion-campo.mp4`, `integracion-comunidad.mp4`, `taller-ninez.mp4`). The `poster=` hardcoded on `.vshow-main video` must match the **first** `.vs-item` (`ui.js` selects it on load). The first two are landscape at 720 px, the third is vertical at 360×640 and exercises the `.vertical` branch of the frame.
+The showcase rail holds sixteen pieces. It opens with `tejido-social.mp4` (7-oct-2026, the community raising a roof frame together), then `amazonia-aerea.mp4` and `selva-amazonia.mp4` from the 5-oct batch. Those three carry the Corporation's own burnt-in branding ("Unidos por la Amazonía", "Juntos construimos tejido social"), which is why they lead, followed by `patio-escuela.mp4` and `retrato-ninez.mp4` (19-oct), then `taller-cartilla.mp4` and `vivienda-comunidad.mp4` from the same days and then the 7-sep batch (`recreacion-campo.mp4`, `integracion-comunidad.mp4`, `taller-ninez.mp4`). The `poster=` hardcoded on `.vshow-main video` must match the **first** `.vs-item` (`ui.js` selects it on load). The first two are landscape at 720 px, the third is vertical at 360×640 and exercises the `.vertical` branch of the frame.
 
 **Web encoding profile.** These clips come from phones and are already heavily compressed, so CRF alone does not control the output size — encoding `comunidad-2026.mp4` at CRF 30 actually produced 47 MB, and `alianza-360.mp4` at CRF 28 came out *larger* than the original. Use **two-pass VBR with an explicit bitrate** when a target size matters:
 

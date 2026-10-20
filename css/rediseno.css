@@ -2983,3 +2983,23 @@ body > section.sec:last-of-type{padding-bottom:clamp(2.4rem,4.4vw,3.6rem)}
 .mi-eti-sm .mi-eti-n{font-size:24px}
 .mi-eti-sm .mi-eti-v{font-size:20px}
 .mi-eti-sm .mi-eti{stroke-width:6}
+
+
+/* ============================================================================
+   60. DIRECCIONES LARGAS QUE NO PARTEN
+   contacto@corporacionprotectoraverde.ong mide 39 caracteres y, sin un punto
+   de corte, empujaba su contenedor fuera de la pantalla a 320 y 360 px. Se
+   deja partir allí donde puede aparecer; overflow-wrap:anywhere solo actúa
+   cuando la palabra no cabe, así que el resto del texto no se ve afectado.
+   ========================================================================== */
+a[href^="mailto:"],
+.dp-card, .dp-card p, .dp-card a,
+.paso p, .paso-lista li,
+.flujo-card p,
+.aviso span,
+.form .note,
+.contact-info .ci,
+.mj-nota p,
+.ally-role{
+  overflow-wrap:anywhere;
+}

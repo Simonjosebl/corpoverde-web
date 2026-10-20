@@ -323,7 +323,7 @@
   "Enviar mensaje":"Send message",
   "Enviar mi solicitud":"Send my request",
   "Se abrirá tu aplicación de correo con el mensaje listo para enviar.":"Your email app will open with the message ready to send.",
-  "Se abrirá tu aplicación de correo con la solicitud lista para enviar a corpoteverde@gmail.com.":"Your email app will open with the request ready to send to corpoteverde@gmail.com.",
+  "Se abrirá tu aplicación de correo con la solicitud lista para enviar a contacto@corporacionprotectoraverde.ong.":"Your email app will open with the request ready to send to contacto@corporacionprotectoraverde.ong.",
   "Se abrirá tu aplicación de correo con el mensaje listo. Recuerda adjuntar allí los formatos diligenciados.":"Your email app will open with the message ready. Remember to attach the completed forms there.",
 
   /* ---------- Súmate ---------- */
@@ -671,7 +671,7 @@
   "145 KB":"145 KB", "148 KB":"148 KB", "101 KB":"101 KB", "1,8 MB":"1.8 MB",
   "10 Ejes":"10 Pillars",
   "corporacionprotectoraverde.ong":"corporacionprotectoraverde.ong",
-  "corpoteverde@gmail.com":"corpoteverde@gmail.com",
+  "contacto@corporacionprotectoraverde.ong":"contacto@corporacionprotectoraverde.ong",
 
   /* ---------- Piezas del showcase de video ---------- */
   "Portafolio completo":"Full portfolio",
@@ -821,7 +821,7 @@
   "Fase 2: viabilización y aprobación":"Phase 2: feasibility and approval",
   "Fase 3: financiación y ejecución":"Phase 3: funding and delivery",
   "Subir el proyecto al correo":"Send the project by email",
-  "Envías la iniciativa y sus anexos a corpoteverde@gmail.com. Es el único canal de radicación.":"You send the initiative and its attachments to corpoteverde@gmail.com. It is the only filing channel.",
+  "Envías la iniciativa y sus anexos a contacto@corporacionprotectoraverde.ong. Es el único canal de radicación.":"You send the initiative and its attachments to contacto@corporacionprotectoraverde.ong. It is the only filing channel.",
   "Verificación de la información":"Verification of the information",
   "Corpoteverde evalúa el envío y verifica el estado de la información requerida. Si falta algo, te lo pedimos antes de continuar.":"Corpoteverde assesses the submission and verifies the status of the required information. If something is missing, we ask for it before moving on.",
   "Aval del equipo técnico":"Endorsement by the technical team",
@@ -937,7 +937,7 @@
   "Autorizo a la Corporación Protectora Verde a tratar mis datos para gestionar esta inscripción, según su":"I authorise Corporación Protectora Verde to process my data in order to handle this registration, under its",
   "política de protección de datos":"data protection policy",
   "Enviar mi inscripción":"Send my registration",
-  "Se abrirá tu aplicación de correo con la inscripción lista para enviar a corpoteverde@gmail.com. Si prefieres WhatsApp, escríbenos al +57 324 579 9353.":"Your email app will open with the registration ready to send to corpoteverde@gmail.com. If you prefer WhatsApp, write to us at +57 324 579 9353.",
+  "Se abrirá tu aplicación de correo con la inscripción lista para enviar a contacto@corporacionprotectoraverde.ong. Si prefieres WhatsApp, escríbenos al +57 324 579 9353.":"Your email app will open with the registration ready to send to contacto@corporacionprotectoraverde.ong. If you prefer WhatsApp, write to us at +57 324 579 9353.",
   "Opcional":"Optional",
   "Ej. Córdoba":"e.g. Córdoba",
   "Ej. Montería":"e.g. Montería",
@@ -1013,7 +1013,32 @@
   "Economía circular, residuos y energía renovable. Ejecuta la salud preventiva en el Atlántico y la fase II de la plaza de mercado de Chaparral":"Circular economy, waste and renewable energy. Delivers preventive health in Atlántico and phase II of the Chaparral market hall",
   "Las entidades a las que todavía no se les ha asignado plazo no aparecen aquí. ¿Tu organización quiere sumar?":"Entities without an assigned timeframe are not listed here. Would your organisation like to join?",
   "Juntos construimos tejido social":"Together we build the social fabric",
-  "La comunidad entera levantando la estructura de un espacio común, en minga.":"The whole community raising the frame of a shared space, working side by side."
+  "La comunidad entera levantando la estructura de un espacio común, en minga.":"The whole community raising the frame of a shared space, working side by side.",
+
+  /* --- material del 19 de octubre de 2026 --- */
+  "Lectoescritura":"Reading and writing",
+  "Juego":"Play",
+  "Escuela":"School",
+  "Convocatoria":"Turnout",
+  "Llegada":"Getting there",
+  "Armando frases con tarjetas, en el patio de la escuela":"Building sentences with word cards, in the school yard",
+  "La ronda que abre cada jornada en la cancha de la comunidad":"The circle that opens every session on the community court",
+  "Los zapatos quedan afuera: así se entra al aula":"Shoes stay outside: that is how you enter the classroom",
+  "La fila para empezar, con casi toda la niñez de la vereda":"The queue to begin, with nearly every child in the village",
+  "El último tramo hasta la comunidad se hace por el río":"The last stretch to the community is made by river",
+  "Toda la clase atenta, en la grada de la escuela":"The whole class listening, on the school bleachers",
+  "Trabajo en el aula, con los cuadernos sobre la mesa de siempre":"Classroom work, with the notebooks on the same old table",
+  "Dos niños ordenando tarjetas con palabras sobre el piso de cemento":"Two boys arranging word cards on the concrete floor",
+  "Niñas y niños tomados de la mano formando una ronda en una cancha":"Children holding hands in a circle on a court",
+  "Zapatos alineados a la entrada de un aula de madera, con una niña asomada a la ventana":"Shoes lined up at the door of a wooden classroom, with a girl looking out of the window",
+  "Una fila larga de niñas y niños esperando el inicio de la actividad":"A long queue of children waiting for the activity to start",
+  "Dos integrantes del equipo navegando el río en lancha, con chaleco salvavidas":"Two team members travelling the river by boat, in life jackets",
+  "Niñas y niños sentados en una grada bajo el techo, atentos a la actividad":"Children seated on bleachers under the roof, following the activity",
+  "Tres niñas escribiendo en sus cuadernos alrededor de una mesa de madera":"Three girls writing in their notebooks around a wooden table",
+  "Recreo en la escuela":"Break time at school",
+  "Niñas y niños corriendo por el patio, con la escuela de la comunidad al fondo.":"Children running across the yard, with the community school behind them.",
+  "Las caras de la jornada":"The faces of the day",
+  "Un momento con las niñas y los niños que participan en los talleres.":"A moment with the children who take part in the workshops."
   };
 
   /* ==========================================================================

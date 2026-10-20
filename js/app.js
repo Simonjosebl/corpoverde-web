@@ -105,7 +105,7 @@
       var a=document.getElementById('asunto').value||'Contacto desde la web';
       var m=document.getElementById('mensaje').value||'';
       var body='Nombre: '+decodeURIComponent(n)+'%0D%0ACorreo: '+c+'%0D%0A%0D%0A'+encodeURIComponent(m);
-      window.location.href='mailto:corpoteverde@gmail.com?subject='+encodeURIComponent(a)+'&body='+body;
+      window.location.href='mailto:contacto@corporacionprotectoraverde.ong?subject='+encodeURIComponent(a)+'&body='+body;
     });
   }
 
@@ -597,7 +597,7 @@
         '\nAutoriza el tratamiento de sus datos: sí\n';
 
       var asunto='Inscripción de emprendimiento: '+(v('mjNegocio')||v('mjNombre'));
-      window.location.href='mailto:corpoteverde@gmail.com'+
+      window.location.href='mailto:contacto@corporacionprotectoraverde.ong'+
         '?subject='+encodeURIComponent(asunto)+
         '&body='+encodeURIComponent(cuerpo);
     });
