@@ -30,6 +30,7 @@
   /* ---------- Cromo: barra superior, menú, pie ---------- */
   "ONG – Colombia":"NGO – Colombia",
   "Idioma / Language":"Language / Idioma",
+  "Síguenos":"Follow us",
   "Inicio":"Home",
   "Nosotros":"About us",
   "Qué hacemos":"What we do",

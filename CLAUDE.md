@@ -204,6 +204,19 @@ The footer logo marquee mirrors this list and is duplicated twice per track for 
 
 **Pillars band** (`index.html#enfoque`) — `.pilares-panel` holds a 4-up `.pilar` grid. `.pilar` carries `position:relative;z-index:1` on purpose: `.pilar-ic::before` is the conic-gradient ring at `z-index:-1`, and without that stacking context it would paint behind the panel background and vanish.
 
+**Social profiles** (added 22-oct-2026) — Instagram, Facebook and TikTok appear in **four** places, and the first three are part of the duplicated chrome, so a change means editing all seven pages:
+
+| where | markup |
+|---|---|
+| footer | three more `<a>` inside the existing `.socials`, between WhatsApp and the mail icon |
+| topbar | `<span class="tb-redes">` just before `.tb-sep` |
+| mobile drawer | `.drawer-redes` row immediately above `.drawer-lang` |
+| `index.html#contacto` | a fifth `.ci` whose body is `.ci-redes` |
+
+The URLs are `https://www.instagram.com/corpoprotecotraverde`, `https://www.facebook.com/61595279382591` and `https://www.tiktok.com/@corpoprotectoraverde`. The Facebook one is the numeric profile id because the `/share/1BdpMxvtKE/` link the Corporation sent is a redirect that may not survive; it resolves to "Corporación Protectora Verde". **The Instagram handle really is spelt `corpoprotecotraverde`**, with the `c` and the `t` transposed against the TikTok handle `corpoprotectoraverde` — it is not a typo in this repo, it is how the account was registered, and it is worth asking the Corporation whether they want to rename it.
+
+The three glyphs are solid-fill brand marks, not the site's usual 1.8-stroke outline icons, so CSS section 61 cancels the global `.tb-right svg{stroke:currentColor}` rule with `fill:currentColor;stroke:none`. Below 420px the topbar copies are hidden: the drawer and the footer already carry them and the topbar has no room. Only `Síguenos` needed a `DIC` entry; the `aria-label`s are brand names.
+
 **The contact address is `contacto@corporacionprotectoraverde.ong`** (changed from `corpoteverde@gmail.com` on 20-oct-2026). It appears 59 times across the seven pages, `js/app.js` and the `DIC` in `js/i18n.js`, as plain text, as `mailto:` hrefs and inside translated strings. There is no URL-encoded variant, so a plain string replace covers all of it — but **check the count afterwards**, and remember the English side of `DIC` carries it too.
 
 It is 39 characters with no natural break point, and that alone pushed `.dp-card` and the phase cards off-screen at 320 and 360 px. CSS section 60 gives `overflow-wrap:anywhere` to the handful of containers that can hold it. If a new component shows the address, add it to that list.
