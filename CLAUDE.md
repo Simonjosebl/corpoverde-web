@@ -182,9 +182,11 @@ Its `<select>`s use the generic `.field select` rule added for this page, which 
 
 **Alliance cards** (`alianzas.html#alianzas`) — `.allies-grid` is a 3-column grid (2 cols ≤900px, 1 col ≤540px) of `.ally` anchors: `.ally-tag` → `.ally-logo` (fixed 92px framed box; pick a `lg-w`/`lg-m`/`lg-bid`/`lg-t`/`lg-s` size class) → `.ally-name` → `.ally-role` → `.ally-link`.
 
-It holds **ten** entities in one list: the cooperation and institutional allies, and the organisations that actually deliver the approved projects (from the "Relación proyectos por empresas ejecutoras" sheet). They were two separate sections once, which meant Ingeambiental and 360 Group appeared twice on the same page; now each entity appears once and `.ally-tag` says which it is, with `.es-ejec` turning the tag green for anyone who delivers.
+It holds **ten** entities in one list: the cooperation and institutional allies, Waycard as the technology partner, and the organisations that actually deliver the approved projects (from the "Relación proyectos por empresas ejecutoras" sheet). They were two separate sections once, which meant Ingeambiental and 360 Group appeared twice on the same page; now each entity appears once and `.ally-tag` says which it is, with `.es-ejec` turning the tag green for anyone who delivers.
 
 Ten is not a multiple of three, so the orphan in the last row is centred by `:nth-last-child(1):nth-child(3n+1){grid-column:2}` rather than left hanging. Keep that rule in mind when the count changes.
+
+**Black Embassy ONG was removed on 27-oct-2026** at the Corporation's request, and Waycard took its slot, so the count stays at ten and the orphan rule below is unchanged. `img/asset-73784ad43a.png` was its logo and is deleted.
 
 All ten now carry a logo. Eight came from their owners: `img/pies-descalzos.png` (rasterised at 392px from the foundation's own SVG), `img/casa-didactico.png` (from the company's site), `img/gea.png` (supplied by the Corporation, cropped to its bounding box with the white matte turned transparent) and the five already in the repo.
 
@@ -201,6 +203,24 @@ The footer logo marquee mirrors this list and is duplicated twice per track for 
 **Two rows of the delivery sheet are deliberately not published**: Fundación Escala (ecological restoration in Córdoba, $30.000.000.000) and Fundación Claudia T. (the women's entrepreneurship strategy, $2.500.000.000). Both are marked PENDIENTE with 0 months, so there is no contract to announce.
 
 **No NIT and no amounts are published.** The sheet gives Fundación Pies Descalzos two different NITs (802016680-8 and 900952420-1), and the second is 360 Group's own number in another row; 360 Group itself appears with two more. Until the Corporation confirms which is which, a tax ID on a public page is a liability rather than transparency. Timeframes and values were on the cards briefly and were removed: the portfolio page is where figures belong.
+
+**Waycard** (`alianzas.html#waycard`, CSS section 62) — the Corporation's technology partner, added 27-oct-2026. It appears in five places:
+
+| where | what |
+|---|---|
+| `alianzas.html` `.allies-grid` | an `.ally` card tagged "Alianza tecnológica" |
+| `alianzas.html#waycard` | the full band: `.wc-panel` with the mark and the two store buttons, a 4-up `.wc-grid` and the legal `.aviso` |
+| `alianzas.html` `.subnav` | the page gained a subnav so the band has its own tab |
+| `index.html`, `mujeres.html` | a compact `.wc-ruta` ribbon |
+| drawer + footer of all seven pages | a link to `alianzas.html#waycard` |
+
+**What it actually is, and why the copy is worded carefully.** Waycard is a **self-custodial crypto wallet app with a virtual card**, published by Waynance and operated by **Fusion Technologies FZCO (Dubai, licence 43448)**. Its own site states that it does not hold user funds, that the card is issued by third-party providers and is subject to availability, and that the app is free. There is a Corporación Protectora Verde card inside that ecosystem.
+
+Nothing on waycard.app mentions the Corporation, an NGO, donations or a social cause, and no public record of the partnership could be found. So the copy says the Corporation *uses* the card as a channel for resources, and never that downloading the app funds a community. The `.aviso` at the foot of the band names the operator, states that the Corporation does not build the app, does not custody funds and does not charge for it, and repeats that **presenting a project remains free and needs no app**. That last line exists because the site promises a free process elsewhere, and a financial product on the same domain could blur it. **Do not soften or delete that notice.**
+
+A separate marketplace sells a **"Pack CPV, Card + Cold Wallet" at US$99**, seen in a screenshot from the Corporation. That price and that pack are **deliberately not published here**: it is a paid product sold by a third party, and an NGO page that quotes it would read as the Corporation selling it. If the Corporation wants it published, get the seller, the terms and who receives the money in writing first.
+
+The logos come from the brand's own site: `img/waycard.png` (dark ink, for the light card frame and the light ribbon) and `img/waycard-blanco.png` (white, for the dark band), both rescaled to 256px from the 500px originals at `waycard.app/images/logo.png` and `/images/blanco.png`. The store buttons are **drawn with the site's own tokens**, not Google's and Apple's official badges: they respect the dark panel, the touch target and the language switch, and they do not go stale. The Google Play and Apple glyphs are the only part taken verbatim.
 
 **Pillars band** (`index.html#enfoque`) — `.pilares-panel` holds a 4-up `.pilar` grid. `.pilar` carries `position:relative;z-index:1` on purpose: `.pilar-ic::before` is the conic-gradient ring at `z-index:-1`, and without that stacking context it would paint behind the panel background and vanish.
 

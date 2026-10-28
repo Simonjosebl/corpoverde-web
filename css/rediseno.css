@@ -3053,3 +3053,92 @@ a[href^="mailto:"],
 /* en pantallas estrechas la barra superior ya oculta los textos de correo y
    teléfono; los íconos de redes son lo primero que sobra si el espacio falta */
 @media (max-width:420px){ .tb-redes{display:none} }
+
+
+/* ============================================================================
+   62. WAYCARD
+   Banda de la alianza tecnológica en alianzas.html#waycard, más la cinta
+   compacta que la anuncia desde la portada y desde mujeres.html.
+   Los botones de tienda se dibujan con los tokens del sitio en vez de pegar
+   las insignias oficiales de Google y Apple: así respetan el modo oscuro y
+   el tamaño de toque, y no se desalinean cuando cambia el idioma.
+   ========================================================================== */
+.wc-panel{
+  display:flex;align-items:center;justify-content:space-between;gap:1.6rem;flex-wrap:wrap;
+  margin:0 auto;max-width:900px;padding:1.9rem 2rem;border-radius:var(--rad-lg);
+  background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.13);
+  box-shadow:var(--sombra-alta);
+}
+.wc-marca{display:flex;align-items:center;gap:1rem;min-width:0}
+.wc-marca img{width:62px;height:62px;object-fit:contain;flex-shrink:0}
+.wc-marca b{
+  display:block;font-family:var(--display);font-weight:700;font-size:1.5rem;
+  line-height:1.15;color:#fff;letter-spacing:-.01em;
+}
+.wc-marca span{display:block;margin-top:.2rem;font-size:.92rem;color:rgba(255,255,255,.7);line-height:1.45}
+
+.wc-tiendas{display:flex;gap:.7rem;flex-wrap:wrap}
+.wc-tienda{
+  display:inline-flex;align-items:center;gap:.7rem;padding:.72rem 1.15rem;
+  border-radius:14px;background:#fff;color:var(--bosque);
+  border:1px solid transparent;transition:transform .35s var(--ease),box-shadow .35s var(--ease);
+}
+.wc-tienda:hover{transform:translateY(-3px);box-shadow:0 14px 32px -16px rgba(0,0,0,.6)}
+.wc-tienda svg{width:23px;height:23px;fill:currentColor;stroke:none;flex-shrink:0}
+.wc-tienda small{display:block;font-size:.66rem;letter-spacing:.09em;text-transform:uppercase;opacity:.62;line-height:1.3}
+.wc-tienda b{display:block;font-family:var(--display);font-weight:700;font-size:1.02rem;line-height:1.2}
+
+.wc-web{
+  display:inline-flex;align-items:center;gap:.4rem;font-weight:600;font-size:.95rem;
+  color:var(--lima-2);
+}
+.wc-web svg{width:16px;height:16px}
+.wc-web:hover{color:#fff}
+
+.wc-grid{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:1.1rem;margin-top:2.4rem;
+}
+.wc-v{
+  padding:1.6rem 1.4rem;border-radius:var(--rad);
+  background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.11);
+}
+.wc-v-ic{
+  width:50px;height:50px;border-radius:15px;display:grid;place-items:center;margin-bottom:.9rem;
+  background:rgba(138,195,45,.17);color:var(--lima-2);
+}
+.wc-v-ic svg{width:24px;height:24px}
+.wc-v b{display:block;font-family:var(--display);font-weight:700;font-size:1.1rem;color:#fff;line-height:1.25}
+.wc-v p{margin-top:.5rem;font-size:.92rem;line-height:1.6;color:rgba(255,255,255,.72)}
+
+/* el aviso legal hereda el bloque claro de presentar-proyecto; aquí va sobre
+   fondo oscuro, así que se le da su propia variante en vez de estilos en línea */
+.sec-dark .aviso{
+  margin-top:2rem;background:rgba(255,255,255,.06);
+  border-color:rgba(232,197,71,.35);color:rgba(255,255,255,.78);
+}
+.sec-dark .aviso svg{color:var(--oro-2)}
+
+/* cinta compacta que anuncia Waycard desde otras páginas */
+.wc-ruta{
+  display:flex;align-items:center;gap:1.4rem;flex-wrap:wrap;justify-content:space-between;
+  margin-top:2.6rem;padding:1.5rem 1.8rem;border-radius:var(--rad-lg);
+  background:linear-gradient(135deg,rgba(138,195,45,.12),rgba(5,140,187,.12));
+  border:1px solid var(--linea-2);
+}
+.wc-ruta-tx{display:flex;align-items:center;gap:1rem;min-width:0;flex:1 1 320px}
+.wc-ruta-tx img{width:52px;height:52px;object-fit:contain;flex-shrink:0}
+.wc-ruta-tx b{display:block;font-family:var(--display);font-weight:700;font-size:1.18rem;line-height:1.25;color:var(--tinta)}
+.wc-ruta-tx span{display:block;margin-top:.25rem;font-size:.93rem;line-height:1.55;color:var(--niebla)}
+.sec-dark .wc-ruta,.sec-foto .wc-ruta{background:rgba(255,255,255,.07);border-color:rgba(255,255,255,.14)}
+.sec-dark .wc-ruta-tx b,.sec-foto .wc-ruta-tx b{color:#fff}
+.sec-dark .wc-ruta-tx span,.sec-foto .wc-ruta-tx span{color:rgba(255,255,255,.72)}
+.wc-ruta .wc-tienda{border-color:var(--linea-2)}
+
+@media (max-width:1024px){ .wc-grid{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:680px){
+  .wc-panel{flex-direction:column;align-items:flex-start;padding:1.5rem 1.3rem}
+  .wc-tiendas{width:100%}
+  .wc-tienda{flex:1 1 auto;justify-content:center}
+  .wc-grid{grid-template-columns:1fr}
+  .wc-ruta{flex-direction:column;align-items:flex-start}
+}
