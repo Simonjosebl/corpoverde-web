@@ -188,9 +188,19 @@ Ten is not a multiple of three, so the orphan in the last row is centred by `:nt
 
 **Black Embassy ONG was removed on 27-oct-2026** at the Corporation's request, and Waycard took its slot, so the count stays at ten and the orphan rule below is unchanged. `img/asset-73784ad43a.png` was its logo and is deleted.
 
-All ten now carry a logo. Eight came from their owners: `img/pies-descalzos.png` (rasterised at 392px from the foundation's own SVG), `img/casa-didactico.png` (from the company's site), `img/gea.png` (supplied by the Corporation, cropped to its bounding box with the white matte turned transparent) and the five already in the repo.
+All ten now carry a logo. Seven came from their owners: `img/casa-didactico.png` (from the company's site), `img/gea.png` (supplied by the Corporation, cropped to its bounding box with the white matte turned transparent) and the five already in the repo.
 
 **`img/funcredes.png` is ours, not theirs.** No site, logo or registry record for Fundación Funcredes could be found, so the Corporation asked for a mark to be drawn. It is a wordmark in the site's own display face with a three-figure seal and a wave for the gulf of Morrosquillo, built from `scratchpad/funcredes.html` and rasterised. Treat it as a placeholder: **swap it the moment the foundation sends its real mark**, and do not present it anywhere as the foundation's registered identity.
+
+**Fundación Pasos para el Futuro, corrected on 5-nov-2026.** This card used to read **Fundación Pies Descalzos** and linked to `fundacionpiesdescalzos.com`, which is Shakira's foundation and has nothing to do with this project. The Corporation supplied the Cámara de Comercio de Bucaramanga certificate of the real executor; the delivery sheet simply had the wrong name.
+
+From that certificate, kept here and **not published on the site**, in line with the no-NIT rule above: NIT 900836364-9, registered 8-apr-2015 (constituted 2-mar-2015), domiciled in Bucaramanga with its address in Girón, Santander, director general Carlos Alberto Acosta Morales, supervised by the Secretaría Jurídica de la Gobernación de Santander, `fundacionpasosparaelfuturo@gmail.com`. Its registered purpose covers social, housing, water and sanitation and environmental projects, which fits the work on the card. The foundation being domiciled in Santander and the project sitting in Piedecuesta, Santander, corroborates the correction.
+
+It has **no website**, so the card links to `proyectos.html#aprobados` with "Ver su proyecto", the same pattern GEA and Funcredes use, instead of inventing one. The old `img/pies-descalzos.png` is deleted.
+
+**`img/pasos-futuro.png` is our redraw of their mark.** No logo file is published anywhere online, so the mark was rebuilt as vector from the raster the Corporation found, in `scratchpad/pasos-futuro.html`, and rasterised with headless Chrome at 2x then scaled to 800px with lanczos. The geometry was measured off the original's pixel map rather than eyeballed: footprint 128x229 (ratio 0.559), the ball of the foot is a ring centred at (59,89) with outer radius 44 and inner radius 30, and five toes arc from small on the left to large on the right. The colours are sampled from the original: **`#128230`** for the footprint and the name, **`#7FB822`** for the word FUNDACIÓN. The eye of the P is a real `<mask>` cut-out, not a white disc, so the logo works on the light card frame and on the dark footer alike.
+
+It is a **horizontal lockup** (5:1), not the foundation's own stacked arrangement. Stacked, the mark is 1.76:1, and in the two places it appears (the 250x64 card frame and the 190x34 footer marquee) it is height-limited, which put "PASOS PARA EL FUTURO" at about 6,6 px of cap height and made it unreadable. Laid out horizontally it fills the frame and the line reads at about 13 px. If the foundation sends its own file, use theirs; this one is a faithful reconstruction, not their official artwork.
 
 The supplied GEA file reads **"GEA Colombia S.A.S."** while the delivery sheet names the contractor **"Grupo Empresarial GEA S.A.S."**. The card keeps the sheet's legal name because that is the authoritative source for the contract, but the two should be reconciled.
 
@@ -202,7 +212,7 @@ The footer logo marquee mirrors this list and is duplicated twice per track for 
 
 **Two rows of the delivery sheet are deliberately not published**: Fundación Escala (ecological restoration in Córdoba, $30.000.000.000) and Fundación Claudia T. (the women's entrepreneurship strategy, $2.500.000.000). Both are marked PENDIENTE with 0 months, so there is no contract to announce.
 
-**No NIT and no amounts are published.** The sheet gives Fundación Pies Descalzos two different NITs (802016680-8 and 900952420-1), and the second is 360 Group's own number in another row; 360 Group itself appears with two more. Until the Corporation confirms which is which, a tax ID on a public page is a liability rather than transparency. Timeframes and values were on the cards briefly and were removed: the portfolio page is where figures belong.
+**No NIT and no amounts are published.** The sheet gives this row two different NITs (802016680-8 and 900952420-1); the first belongs to the real Fundación Pies Descalzos and the second is 360 Group's own number in another row, and 360 Group itself appears with two more. Neither is Pasos para el Futuro's (900836364-9, see below), so that row had the wrong name **and** the wrong tax IDs. Until the Corporation confirms which is which, a tax ID on a public page is a liability rather than transparency. Timeframes and values were on the cards briefly and were removed: the portfolio page is where figures belong.
 
 **Waycard** (`alianzas.html#waycard`, CSS section 62) — the Corporation's technology partner, added 27-oct-2026. It appears in five places:
 
