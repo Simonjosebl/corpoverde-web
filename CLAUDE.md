@@ -247,6 +247,20 @@ The URLs are `https://www.instagram.com/corpoprotecotraverde`, `https://www.face
 
 The three glyphs are solid-fill brand marks, not the site's usual 1.8-stroke outline icons, so CSS section 61 cancels the global `.tb-right svg{stroke:currentColor}` rule with `fill:currentColor;stroke:none`. Below 420px the topbar copies are hidden: the drawer and the footer already carry them and the topbar has no room. Only `Síguenos` needed a `DIC` entry; the `aria-label`s are brand names.
 
+**Vista previa al compartir (Open Graph), añadida el 5-nov-2026.** Hasta esa fecha el sitio no tenía **ninguna** etiqueta `og:`, así que WhatsApp armaba la burbuja solo con `<title>` y `<meta name="description">` y, para la imagen, rastreaba el HTML a ver qué encontraba. Eso funcionó mientras el emblema fue PNG; **desde que el logo pasó a WebP en septiembre de 2026 dejó de salir**, porque WhatsApp no renderiza WebP en las vistas previas y el único PNG que queda en la página es el favicon de 128x128, por debajo del mínimo que acepta.
+
+Las siete páginas llevan ahora el bloque completo, insertado justo después de `<meta name="theme-color">`: `og:type`, `og:site_name`, `og:locale`, `og:url`, `og:title`, `og:description`, `og:image` (+ `secure_url`, `type`, `width`, `height`, `alt`), las cinco `twitter:` con `summary_large_image`, y un `rel="canonical"`. El título y la descripción se copian de los de cada página, así que si cambias uno hay que cambiar el otro.
+
+Tres cosas que no se pueden relajar, porque cada una rompe la vista previa por su cuenta:
+
+- **La URL de la imagen es absoluta.** Una ruta relativa no la resuelve ningún rastreador.
+- **La imagen es JPEG, nunca WebP ni PNG grande.** `img/og-corpoverde.jpg`, 1200x630, 70 KB. WhatsApp deja de mostrarla por encima de unos 600 KB y degrada a miniatura cuadrada por debajo de 300x200.
+- **`og:image` va sin el `?v=`** del resto de los recursos, para que la URL sea estable. Si algún día se rediseña la tarjeta, **cambia el nombre del archivo** en vez de reaprovecharlo: WhatsApp y Facebook cachean por URL durante días.
+
+La tarjeta se construye en `scratchpad/og-corpoverde.html` con los tokens del sitio (fondo `--bosque`, la regla de degradado de los paneles oscuros, Bricolage para el nombre y Fraunces itálica para el lema) y se rasteriza con Chrome sin cabeza a 1200x630, luego `ffmpeg -q:v 4`. Va en horizontal, con el emblema a la izquierda, porque apilado el nombre queda ilegible en el ancho de la burbuja.
+
+**Tras desplegar, la vista previa no cambia sola**: WhatsApp y Facebook guardan lo que cachearon. Para forzar que la vuelvan a leer, comparte el enlace con un parámetro cualquiera (`?x=1`) o pasa la URL por el depurador de Facebook.
+
 **The contact address is `contacto@corporacionprotectoraverde.ong`** (changed from `corpoteverde@gmail.com` on 20-oct-2026). It appears 59 times across the seven pages, `js/app.js` and the `DIC` in `js/i18n.js`, as plain text, as `mailto:` hrefs and inside translated strings. There is no URL-encoded variant, so a plain string replace covers all of it — but **check the count afterwards**, and remember the English side of `DIC` carries it too.
 
 It is 39 characters with no natural break point, and that alone pushed `.dp-card` and the phase cards off-screen at 320 and 360 px. CSS section 60 gives `overflow-wrap:anywhere` to the handful of containers that can hold it. If a new component shows the address, add it to that list.
