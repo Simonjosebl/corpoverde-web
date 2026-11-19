@@ -186,9 +186,13 @@ It holds **ten** entities in one list: the cooperation and institutional allies,
 
 Ten is not a multiple of three, so the orphan in the last row is centred by `:nth-last-child(1):nth-child(3n+1){grid-column:2}` rather than left hanging. Keep that rule in mind when the count changes.
 
-**Black Embassy ONG was removed on 27-oct-2026** at the Corporation's request, and Waycard took its slot, so the count stays at ten and the orphan rule below is unchanged. `img/asset-73784ad43a.png` was its logo and is deleted.
+**The list has been swapped twice, and the count has stayed at ten each time.** Black Embassy ONG came out on 27-oct-2026 and Waycard took its slot; on 19-nov-2026 the Corporation asked for the reverse trade, so **Proyectos 360 Group came out and Black Embassy went back in**. Its logo, `img/asset-73784ad43a.png`, was recovered from commit `34bac31` rather than re-sourced. `img/proyectos-360.png` is deleted but lives in the history at the same commit, so if 360 returns, `git checkout 34bac31 -- img/proyectos-360.png` brings it back.
 
-All ten now carry a logo. Seven came from their owners: `img/casa-didactico.png` (from the company's site), `img/gea.png` (supplied by the Corporation, cropped to its bounding box with the white matte turned transparent) and the five already in the repo.
+**Black Embassy sits at position five, not at the end.** The grid is ordered allies first, deliverers after: Banco Mundial, BID, Minambiente, Waycard and Black Embassy carry the plain and `Alianza tecnológica` tags, and everything from Ingeambiental down carries `.es-ejec`. Dropping a new ally at the bottom would break that reading.
+
+**Removing 360 took a delivery-sheet entity off the page.** It was tagged `Aliada y ejecutora` and the card credited it with preventive health in Atlántico and phase II of the Chaparral market hall. Those two jobs are now shown on the portfolio page only. If the Corporation wants every executor represented again, this is the row that is missing.
+
+All ten now carry a logo. Eight came from their owners: `img/casa-didactico.png` (from the company's site), `img/gea.png` (supplied by the Corporation, cropped to its bounding box with the white matte turned transparent) and the five already in the repo.
 
 **`img/funcredes.png` is ours, not theirs.** No site, logo or registry record for Fundación Funcredes could be found, so the Corporation asked for a mark to be drawn. It is a wordmark in the site's own display face with a three-figure seal and a wave for the gulf of Morrosquillo, built from `scratchpad/funcredes.html` and rasterised. Treat it as a placeholder: **swap it the moment the foundation sends its real mark**, and do not present it anywhere as the foundation's registered identity.
 
@@ -291,7 +295,7 @@ Card families each have their own personality on purpose — `.pilar` (gradient 
 
 ### Assets
 
-`img/asset-<hash>.{jpg,png}` are content-hashed originals — filenames are meaningless, so identify them by the `alt` text at their usage sites. Named files: `img/hero.jpg`, `img/minambiente.png`, `img/proyectos-360.png` (a partner's logo, not ours), `img/comunidad-taller-{1,2,3}.jpg` (2026 community workshop photos).
+`img/asset-<hash>.{jpg,png}` are content-hashed originals — filenames are meaningless, so identify them by the `alt` text at their usage sites. Named files: `img/hero.jpg`, `img/minambiente.png`, `img/comunidad-taller-{1,2,3}.jpg` (2026 community workshop photos).
 
 From the 7-sep-2026 field material: `img/escuela-rural.jpg`, `img/asamblea-comunidad.jpg`, `img/olla-comunitaria.jpg`, `img/ninez-materiales.jpg`, `img/encuentro-comunidad.jpg`, `img/ninas-jornada.jpg` and `img/jornada-plaza.jpg` (the only portrait one, used as the `.imp.tall` tile). Phone originals are 4032 px wide and 1,5–2,8 MB; they are published at 1280 px / `-q:v 5` (~220–370 KB), except the portrait one at 910 px. From the 4 and 5-oct-2026 batch: `img/cartilla-ninez.jpg`, `img/lectura-ninez.jpg`, `img/alfabetizacion-taller.jpg` and `img/maloca-noche.jpg` (all portrait, so they go in as `.imp.tall`), plus `img/cosecha-mojojoy.jpg` and `img/lavado-rio.jpg` (close-ups that survive the horizontal crop of `.imp.wide`).
 
@@ -339,7 +343,7 @@ ffmpeg -i in.mp4 -vf "scale=360:-2:flags=lanczos,fps=24" -c:v libx264 -profile:v
 
 That took `comunidad-2026.mp4` from 69 MB to 15.9 MB (360x640, 24 fps, 391 kbps). 360 px wide is enough: the showcase never renders it above ~350 px. Always keep `+faststart` so playback can begin before the file finishes downloading. The untouched original lives outside the site folder, in `../corpoverde-video-original-2026-08-30/`.
 
-`media/alianza-360.mp4` is **not** wired into the showcase: it carries another organization's branding ("Movimiento Misionero Mundial") and a CapCut watermark. The file is kept in case that association is deliberate, but do not put it back without checking.
+`media/alianza-360.mp4` is **not** wired into the showcase: it carries another organization's branding ("Movimiento Misionero Mundial") and a CapCut watermark, and since 19-nov-2026 360 Group is not an ally of the Corporation at all. The file is kept in case that association is deliberate, but do not put it back without checking.
 
 `docs/formatos/` holds the downloadable official forms; `docs/` also keeps the source spreadsheet and PDF of the project list, plus `Brochure-Institucional-Corpoteve-2026.pdf`.
 
